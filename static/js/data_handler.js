@@ -37,6 +37,12 @@ dataHandler = {
     },
     createNewBoard: function(boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
+        this._data.boards.push({
+            'id': 5,
+            'title': boardTitle,
+            'is_active': true
+        });
+        this._saveData()
     },
     createNewCard: function(cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
