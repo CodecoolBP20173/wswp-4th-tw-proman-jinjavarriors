@@ -60,7 +60,7 @@ dom = {
         var saveButton = document.getElementById('saveBtn');
         saveButton.addEventListener('click', function () {
             var boardTitle = document.getElementById('newBoardName').value;
-            dataHandler.createNewBoard(boardTitle)
+            dataHandler.createNewBoard(boardTitle, dom.loadBoards)
         });
     }
 }
