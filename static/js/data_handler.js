@@ -39,8 +39,9 @@ dataHandler = {
     },
     createNewBoard: function(boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
+        var newId = this.getNewId('board');
         this._data.boards.push({
-            'id': 5,
+            'id': newId,
             'title': boardTitle,
             'is_active': true
         });
@@ -48,6 +49,23 @@ dataHandler = {
     },
     createNewCard: function(cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
-    }
+    },
     // here comes more features
+    getNewId: function (table) {
+        this._loadData();
+        var ids = [];
+        if (table == 'board'){
+            let length = this._data.boards.length;
+            for(let i = 0; i < length; i++) {
+                ids.push(this._data.boards[i]['id']);
+            }
+        } else if (table == 'card'){
+            let length = this._data.cards.length;
+            for(let i = 0; i < length; i++) {
+                ids.push(this._data.cards[i]['id']);
+            }
+        }
+        var newId = Math.max(...ids) + 1;
+        return newId;
+    }
 };
