@@ -47,7 +47,8 @@ dataHandler = {
             'title': boardTitle,
             'is_active': true
         });
-        this._saveData()
+        this._saveData();
+        callback()
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
