@@ -1,8 +1,11 @@
 // It uses data_handler.js to visualize elements
 dom = {
+    isFirstLoad: true,
+
     loadBoards: function () {
         dataHandler.init();
         dataHandler.getBoards(this.showBoards);
+        this.createNewBoard();
         // retrieves boards and makes showBoards called
     },
     showBoards: function (boards) {
@@ -23,13 +26,13 @@ dom = {
             let title = titles[i];
             var isCards = dataHandler.checkCards(id);
 
-            if (isCards === true) {
+            if (isCards && dom.isFirstLoad === false) {
                 element.innerHTML = element.innerHTML + `<div class="board-container" id="${id}">
 <div class="board-header">${title} <button class="btn btn-info" id="btn-${id}">V</button></div>
 </div>`;
                 let string_id = id.toString();
                 document.getElementById("btn-" + string_id).addEventListener("click", function () {
-                    this.loadCards(id);
+                    dom.loadCards(id);
                 });
 
 
@@ -42,9 +45,8 @@ dom = {
                     dataHandler.createNewCard();
                 });
             }
-
-
         }
+        dom.isFirstLoad = false;
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
