@@ -50,10 +50,14 @@ dom = {
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
+        dataHandler.getCardsByBoardId(boardId, this.showCards);
     },
     showCards: function (cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
+        let boardId = cards[0].board_id.toString();
+        let board = document.getElementById(boardId)
+        board.innerHTML = board.innerHTML + 'test';
     },
     // here comes more features
     createNewBoard: function () {

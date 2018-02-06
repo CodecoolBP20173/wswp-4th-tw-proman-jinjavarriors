@@ -26,6 +26,13 @@ dataHandler = {
     },
     getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
+        var boards = this.getBoards();
+        for (let i = 0; i < boards.length; i++) {
+            let board = boards[i];
+            if (board.id === boardId) {
+                callback(board)
+            }
+        }
     },
     getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
@@ -35,6 +42,15 @@ dataHandler = {
     },
     getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
+        let all_cards = this._data.cards;
+        let cards = [];
+        for (let i = 0; i < all_cards.length; i++) {
+            let card = all_cards[i];
+            if (card.board_id === boardId) {
+                cards.push(card)
+            }
+        }
+        callback(cards);
     },
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
