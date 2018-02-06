@@ -6,38 +6,40 @@
 dataHandler = {
     keyInLocalStorage: 'proman-data', // the string that you use as a key in localStorage to save your application data
     _data: {}, // it contains the boards and their cards and statuses. It is not called from outside.
-    _loadData: function() {
+    _loadData: function () {
         // it is not called from outside
         // loads data from local storage, parses it and put into this._data property
         this._data = JSON.parse(localStorage.getItem(this.keyInLocalStorage));
     },
-    _saveData: function() {
+    _saveData: function () {
         // it is not called from outside
         // saves the data from this._data to local storage
         localStorage.setItem(this.keyInLocalStorage, JSON.stringify(this._data));
     },
-    init: function() {
+    init: function () {
         this._loadData();
     },
-    getBoards: function(callback) {
+    getBoards: function (callback) {
         // the boards are retrieved and then the callback function is called with the boards
+        var boards = this._data.boards;
+        callback(boards);
     },
-    getBoard: function(boardId, callback) {
+    getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
     },
-    getStatuses: function(callback) {
+    getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
     },
-    getStatus: function(statusId, callback) {
+    getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
     },
-    getCardsByBoardId: function(boardId, callback) {
+    getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
     },
-    getCard: function(cardId, callback) {
+    getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
     },
-    createNewBoard: function(boardTitle, callback) {
+    createNewBoard: function (boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
         var newId = this.getNewId('board');
         this._data.boards.push({
@@ -47,25 +49,40 @@ dataHandler = {
         });
         this._saveData()
     },
-    createNewCard: function(cardTitle, boardId, statusId, callback) {
+    createNewCard: function (cardTitle, boardId, statusId, callback) {
         // creates new card, saves it and calls the callback function with its data
     },
     // here comes more features
     getNewId: function (table) {
         this._loadData();
         var ids = [];
-        if (table == 'board'){
+        if (table == 'board') {
             let length = this._data.boards.length;
-            for(let i = 0; i < length; i++) {
+            for (let i = 0; i < length; i++) {
                 ids.push(this._data.boards[i]['id']);
             }
-        } else if (table == 'card'){
+        } else if (table == 'card') {
             let length = this._data.cards.length;
-            for(let i = 0; i < length; i++) {
+            for (let i = 0; i < length; i++) {
                 ids.push(this._data.cards[i]['id']);
             }
         }
         var newId = Math.max(...ids) + 1;
         return newId;
+    },
+    checkCards: function (boardId) {
+        let all_cards = this._data.cards;
+        let cards = [];
+        for (let i = 0; i < all_cards.length; i++) {
+            let card = all_cards[i];
+            if (card.board_id === boardId) {
+                cards.push(card)
+            }
+        }
+        if (cards.length === 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 };
