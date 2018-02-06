@@ -14,6 +14,16 @@ dom = {
     showCards: function(cards) {
         // shows the cards of a board
         // it adds necessary event listeners also
-    }
+    },
     // here comes more features
+    createNewCard: function() {
+        var saveButton = document.getElementById('newCardBtn');
+        saveButton.addEventListener("click", function () {
+            var cardTitle = document.getElementById("cardInput").value;
+            var boardId;
+            var statusId = 1; //Default value for new cards
+            dataHandler.createNewCard(cardTitle, boardId, statusId);
+            document.getElementById("cardInput").value = "Please enter a title";
+        });
+    }
 }
