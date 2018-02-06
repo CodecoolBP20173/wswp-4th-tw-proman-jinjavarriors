@@ -17,9 +17,9 @@ dom = {
     },
     // here comes more features
     createNewBoard: function () {
-        let saveButton = document.getElementById('saveBtn');
+        var saveButton = document.getElementById('saveBtn');
         saveButton.addEventListener('click', function() {
-            let boardTitle = document.getElementById('newBoardName').value;
+            var boardTitle = document.getElementById('newBoardName').value;
             dataHandler.createNewBoard(boardTitle)
         });
     }
