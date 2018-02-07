@@ -51,31 +51,36 @@ dom = {
             let title = titles[i];
             var isCards = dataHandler.checkCards(id);
 
-            var nodeOpen = `
-                <div class="board-container" id="${id}">
-                    <div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">V</button></div>
-                    
-                </div>`;
+            var nodeOpen = `<div class="board-container" id="${id}"><div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">V</button></div></div><div class="board-content row" hidden>{% for iteration in range(4) %}<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>{% endfor %}</div>`;
 
-            var nodePlus = `
-                <div class="board-container" id="${id}">
-                    <div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">+</button></div>
-                </div>`;
+            // var nodePlus = `<div class="board-container" id="${id}"><div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">+</button></div></div>`;
 
-            if (isCards) {
-                element.innerHTML = element.innerHTML + nodeOpen;
-                let string_id = id.toString();
-                document.getElementById("btn-" + string_id).addEventListener("click", function () {
-                    dom.loadCards(id);
-                });
+            appendToElement(element, nodeOpen);
+            let openButton = document.getElementById("btn-" + id.toString());
+            openButton.addEventListener("click", function () {
+                dom.loadCards(id)
+            })
 
-            } else {
-                element.innerHTML = element.innerHTML + nodePlus;
-                let string_id = id.toString();
-                document.getElementById("btn-" + string_id).addEventListener("click", function () {
-                    dataHandler.createNewCard();
-                });
-            }
+            // element.innerHTML = element.innerHTML + nodeOpen;
+            // let string_id = id.toString();
+            // document.getElementById("btn-" + string_id).addEventListener("click", function () {
+            //     dom.loadCards(id);
+            // });
+
+            // } else {
+            //     appendToElement(element, nodePlus);
+            //     let plusButton = document.getElementById("btn-" + id.toString());
+            //     openButton.addEventListener("click", function () { dataHandler.createNewCard() });
+            //
+            //     newElement.addEventListener("click", function () { dataHandler.createNewCard() })
+            //
+            //
+            //     // element.innerHTML = element.innerHTML + nodePlus;
+            //     // let string_id = id.toString();
+            //     // document.getElementById("btn-" + string_id).addEventListener("click", function () {
+            //     //     dataHandler.createNewCard();
+            //     // });
+            // }
         }
         dom.isFirstLoad = false;
     },
@@ -93,6 +98,13 @@ dom = {
             var boardTitle = document.getElementById('newBoardName').value;
             dataHandler.createNewBoard(boardTitle, dom.loadBoards)
         });
-    }
+    },
 };
+
+function appendToElement(elementToExtend, textToAppend) {
+    let fakeDiv = document.createElement('div');
+    fakeDiv.innerHTML = textToAppend;
+    elementToExtend.appendChild(fakeDiv.firstChild);
+    return elementToExtend.lastChild;
+}
 
