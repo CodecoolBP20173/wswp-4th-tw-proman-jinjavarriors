@@ -54,7 +54,6 @@ dom = {
             var nodeOpen = `
                 <div class="board-container" id="${id}">
                     <div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">V</button></div>
-                    
                 </div>`;
 
             var nodePlus = `
@@ -63,18 +62,25 @@ dom = {
                 </div>`;
 
             if (isCards) {
-                element.innerHTML = element.innerHTML + nodeOpen;
-                let string_id = id.toString();
-                document.getElementById("btn-" + string_id).addEventListener("click", function () {
-                    dom.loadCards(id);
-                });
+                let newElement = appendToElement(element, nodeOpen);
+                newElement.addEventListener("click", function () { dom.loadCards(id) })
+
+                // element.innerHTML = element.innerHTML + nodeOpen;
+                // let string_id = id.toString();
+                // document.getElementById("btn-" + string_id).addEventListener("click", function () {
+                //     dom.loadCards(id);
+                // });
 
             } else {
-                element.innerHTML = element.innerHTML + nodePlus;
-                let string_id = id.toString();
-                document.getElementById("btn-" + string_id).addEventListener("click", function () {
-                    dataHandler.createNewCard();
-                });
+                let newElement = appendToElement(element, nodePlus);
+                newElement.addEventListener("click", function () { dataHandler.createNewCard() })
+
+
+                // element.innerHTML = element.innerHTML + nodePlus;
+                // let string_id = id.toString();
+                // document.getElementById("btn-" + string_id).addEventListener("click", function () {
+                //     dataHandler.createNewCard();
+                // });
             }
         }
         dom.isFirstLoad = false;
@@ -93,6 +99,13 @@ dom = {
             var boardTitle = document.getElementById('newBoardName').value;
             dataHandler.createNewBoard(boardTitle, dom.loadBoards)
         });
-    }
+    },
 };
+
+function appendToElement(elementToExtend, textToAppend) {
+    let fakeDiv = document.createElement('div');
+    fakeDiv.innerHTML = textToAppend;
+    elementToExtend.appendChild(fakeDiv.firstChild);
+    return elementToExtend.lastChild;
+}
 
