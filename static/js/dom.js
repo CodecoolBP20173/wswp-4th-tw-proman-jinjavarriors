@@ -36,7 +36,7 @@ dom = {
             let title = titles[i];
 
             var nodeOpen = `<div class="board-container" id="${id}"><div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
-            var nodeOpenHidden = '<div class="board-content row" hidden>' + '<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>'.repeat(4) + '</div>';
+            var nodeOpenHidden = '<div class="board-content row" hidden>' + '<div><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newcard">+</button></div>' + '<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>'.repeat(4) + '</div>';
 
             appendToElement(element, nodeOpen);
             appendToElement(element, nodeOpenHidden);
