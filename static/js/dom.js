@@ -35,11 +35,16 @@ dom = {
             let id = ids[i];
             let title = titles[i];
 
-            var nodeOpen = `<div class="board-container" id="${id}"><div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
-            var nodeOpenHidden = '<div class="board-content row" hidden>' + '<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>'.repeat(4) + '</div>';
+            var boardContainer = `<div class="board-container" id="${id}"><div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
+            var boardContentActive = '<div class="board-content row">' + '<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>'.repeat(4) + '</div>';
+            var boardContentInactive = '<div class="board-content row" hidden>' + '<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>'.repeat(4) + '</div>';
 
-            appendToElement(element, nodeOpen);
-            appendToElement(element, nodeOpenHidden);
+            appendToElement(element, boardContainer);
+            if (boards[i].is_active){
+                appendToElement(element, boardContentActive);
+            } else if (!boards[i].is_active) {
+                appendToElement(element, boardContentInactive);
+            }
 
             let openButton = document.getElementById("btn-" + id.toString());
             openButton.addEventListener("click", function () {
