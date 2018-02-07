@@ -50,7 +50,7 @@ dataHandler = {
                 cards.push(card)
             }
         }
-        callback(cards);
+        callback(cards, boardId);
     },
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
