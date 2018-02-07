@@ -36,9 +36,18 @@ dataHandler = {
     },
     getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
+        var statuses = this._data.statuses;
+        callback(statuses)
     },
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
+        var statuses = this.getStatuses();
+        for (let i = 0; i < statuses.length; i++) {
+            let status = statuses[i];
+            if (status.id === statusId) {
+                callback(status)
+            }
+        }
     },
     getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
