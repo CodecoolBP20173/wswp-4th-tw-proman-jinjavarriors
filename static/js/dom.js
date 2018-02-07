@@ -3,6 +3,7 @@ dom = {
     init: function () {
         dom.createNewBoard();
         dom.loadBoards();
+        dom.createNewCard();
     },
     isFirstLoad: true,
 
@@ -36,7 +37,7 @@ dom = {
             let title = titles[i];
 
             var nodeOpen = `<div class="board-container" id="${id}"><div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
-            var nodeOpenHidden = '<div class="board-content row" hidden>' + '<div><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newcard">+</button></div>' + '<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>'.repeat(4) + '</div>';
+            var nodeOpenHidden = '<div class="board-content row" hidden>' + '<div><button type="button" class="btn btn-info btn-lg addCard" data-toggle="modal" data-target="#newcard">+</button></div>' + '<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>'.repeat(4) + '</div>';
 
             appendToElement(element, nodeOpen);
             appendToElement(element, nodeOpenHidden);
@@ -44,8 +45,7 @@ dom = {
             let openButton = document.getElementById("btn-" + id.toString());
             openButton.addEventListener("click", function () {
                 dom.loadCards(id)
-            })
-
+            });
         }
         dom.isFirstLoad = false;
     },
@@ -74,17 +74,22 @@ dom = {
             var boardTitle = document.getElementById('newBoardName').value;
             dataHandler.createNewBoard(boardTitle, dom.loadBoards)
         });
-    }
-    createNewCard: function() {
+    },
+    createNewCard: function () {
+        var addCardArray = document.getElementsByClassName("addCard");
+        var boardId;
+        for (let addCardBtn of addCardArray) {
+            addCardBtn.addEventListener("click", function () {
+                boardId = addCardBtn.parentElement.parentElement.previousSibling.id;
+            });
+        };
+
         var saveButton = document.getElementById('newCardBtn');
         saveButton.addEventListener("click", function () {
             var cardTitle = document.getElementById("cardInput").value;
-            var boardId;
-            var statusId = 1; //Default value for new cards
-            dataHandler.createNewCard(cardTitle, boardId, statusId);
-            document.getElementById("cardInput").value = "Please enter a title";
+            var statusId = 1;
+            dataHandler.createNewCard(cardTitle, boardId, statusId, dom.showCards);
         });
-    }
     },
 };
 

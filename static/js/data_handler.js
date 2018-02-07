@@ -73,18 +73,21 @@ dataHandler = {
             'is_active': true
         });
         this._saveData();
-        callback()
     },
-    createNewCard: function(cardTitle, boardId, statusId, callback) {
-        var newId;
-        this._data.boards.push({
+    createNewCard: function (cardTitle, boardId, statusId, callback) {
+        var newId = this.getNewId('card');
+        this._data.cards.push({
             'id': newId,
             'title': cardTitle,
             'board_id': boardId,
-            'status_is': statusId
+            'status_id': statusId
         });
-        this._saveData()
-    }
+        this._saveData();
+        var cards = dataHandler.getCardsByBoardId(boardId, function () {
+
+        });
+        callback(cards, boardId);
+    },
     // here comes more features
     getNewId: function (table) {
         this._loadData();
