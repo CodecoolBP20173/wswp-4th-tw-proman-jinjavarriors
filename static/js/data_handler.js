@@ -34,8 +34,10 @@ dataHandler = {
             }
         }
     },
-    getStatuses: function (callback) {
+
+        getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
+        callback(this._data.statuses)
     },
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
