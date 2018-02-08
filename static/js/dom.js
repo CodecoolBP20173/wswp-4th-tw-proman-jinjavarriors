@@ -68,7 +68,6 @@ dom = {
         // it adds necessary event listeners also
         console.log(cards);
         let board = document.getElementById('board' + boardId);
-        console.log(board);
         let row = document.getElementsByClassName('board-content row')[boardId - 1];
         if (row.hasAttribute('hidden')) {
             row.removeAttribute('hidden');
@@ -78,16 +77,16 @@ dom = {
         }
         var statusColumns = board.getElementsByClassName('board-details-content');
         for (let i = 0; i < cards.length; i++) {
-            if (cards[i].id === 1){
+            if (cards[i].status_id === 1){
                 let content = statusColumns.statusId1.innerHTML;
                 statusColumns.statusId1.innerHTML = '<div>' + cards[i].title + '</div>';
-            } else if (cards[i].id === 2){
+            } else if (cards[i].status_id === 2){
                 let content = statusColumns.statusId2.innerHTML;
                 statusColumns.statusId2.innerHTML = '<div>' + cards[i].title + '</div>';
-            } else if (cards[i].id === 3){
+            } else if (cards[i].status_id === 3){
                 let content = statusColumns.statusId3.innerHTML;
                 statusColumns.statusId3.innerHTML = '<div>' + cards[i].title + '</div>';
-            } else if (cards[i].id === 4){
+            } else if (cards[i].status_id === 4){
                 let content = statusColumns.statusId4.innerHTML;
                 statusColumns.statusId4.innerHTML = '<div>' + cards[i].title + '</div>';
             }
