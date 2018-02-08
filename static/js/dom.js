@@ -4,6 +4,7 @@ dom = {
         dom.createNewBoard();
         dom.loadBoards();
         dom.createNewCard();
+        dom.dragAndDrop();
     },
     isFirstLoad: true,
 
@@ -37,27 +38,79 @@ dom = {
                 let id = ids[i];
                 let title = titles[i];
 
-                var boardContainer = `<div class="board-container" id="${id}"><div class="board-header">${title}<button type="button" class="btn btn-info btn-lg addCard" data-toggle="modal" data-target="#newcard">+</button><button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
-                var boardContentActive = `<div id="board${id}" class="board-content row"><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[0].name}</div><div id="statusId${statuses[0].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[1].name}</div><div id="statusId${statuses[1].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[2].name}</div><div id="statusId${statuses[2].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[3].name}</div><div id="statusId${statuses[3].id}" class="board-details-content"></div></div></div>`;
-                var boardContentInactive = `<div id="board${id}" class="board-content row" hidden><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[0].name}</div><div id="statusId${statuses[0].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[1].name}</div><div id="statusId${statuses[1].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[2].name}</div><div id="statusId${statuses[2].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[3].name}</div><div id="statusId${statuses[3].id}" class="board-details-content"></div></div></div>`;
+                var boardContainer = `<div class="board-container" id="${id}">
+                                            <div class="board-header font-weight-bold col-12">${title}
+                                                <button type="button" class="btn btn-primary addCard" data-toggle="modal" data-target="#newcard">
+                                                    <i id="addCard${id}" class="far fa-plus-square"></i>
+                                                </button>
+                                                <button class="btn btn-info arrow" id="btn-${id}">
+                                                    <i id="openArrow${id}" class="fas"></i>
+                                                </button>
+                                            </div>
+                                        </div>`;
+                var boardContentActive = `<div id="board${id}" class="board-content row">
+                                            <div class="board-details-container col-md-3 col-sm-6 col-12">
+                                                <div class="board-details-header font-weight-bold">${statuses[0].name}</div>
+                                                <div id="statusId${statuses[0].id}" class="board-details-content dragCont h-100"></div>
+                                            </div>
+                                            <div class="board-details-container col-md-3 col-sm-6 col-12">
+                                                <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
+                                            <div id="statusId${statuses[1].id}" class="board-details-content dragCont h-100"></div>
+                                            </div>
+                                            <div class="board-details-container col-md-3 col-sm-6 col-12">
+                                                <div class="board-details-header font-weight-bold">${statuses[2].name}</div>
+                                                <div id="statusId${statuses[2].id}" class="board-details-content dragCont h-100"></div>
+                                            </div>
+                                            <div class="board-details-container col-md-3 col-sm-6 col-12">
+                                                <div class="board-details-header font-weight-bold">${statuses[3].name}</div>
+                                                <div id="statusId${statuses[3].id}" class="board-details-content dragCont h-100"></div>
+                                            </div>
+                                        </div>`;
+                var boardContentInactive = `<div id="board${id}" class="board-content row" hidden>
+                                                <div class="board-details-container col-md-3 col-sm-6 col-12">
+                                                    <div class="board-details-header font-weight-bold">${statuses[0].name}</div>
+                                                    <div id="statusId${statuses[0].id}" class="board-details-content dragCont h-100"></div>
+                                                </div>
+                                                <div class="board-details-container col-md-3 col-sm-6 col-12">
+                                                    <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
+                                                    <div id="statusId${statuses[1].id}" class="board-details-content dragCont h-100"></div>
+                                                </div>
+                                                <div class="board-details-container col-md-3 col-sm-6 col-12">
+                                                    <div class="board-details-header font-weight-bold">${statuses[2].name}</div>
+                                                    <div id="statusId${statuses[2].id}" class="board-details-content dragCont h-100"></div>
+                                                </div>
+                                                <div class="board-details-container col-md-3 col-sm-6 col-12">
+                                                    <div class="board-details-header font-weight-bold">${statuses[3].name}</div>
+                                                    <div id="statusId${statuses[3].id}" class="board-details-content dragCont h-100"></div>
+                                                </div>
+                                            </div>`;
 
                 appendToElement(element, boardContainer);
-                if (boards[i].is_active) {
+                if (boards[id - 1].is_active) {
                     appendToElement(element, boardContentActive);
-                } else if (!boards[i].is_active) {
+                    let btn_icon = document.getElementById('openArrow' + id);
+                    btn_icon.classList.add('fa-arrow-circle-up');
+                } else if (!boards[id - 1].is_active) {
                     appendToElement(element, boardContentInactive);
+                    let btn_icon = document.getElementById('openArrow' + id);
+                    btn_icon.classList.add('fa-arrow-circle-down');
                 }
 
                 let openButton = document.getElementById("btn-" + id.toString());
                 openButton.addEventListener("click", function () {
                     dom.loadCards(id);
-                    let board = document.getElementById('board' + boards[i].id);
-
+                    let board = document.getElementById('board' + boards[id - 1].id);
+                    let btn_icon = document.getElementById('openArrow' + id);
                     if (board.hasAttribute('hidden')) {
                         board.removeAttribute('hidden');
+                        btn_icon.classList.remove('fa-arrow-circle-down');
+                        btn_icon.classList.add('fa-arrow-circle-up');
                     } else {
                         let att = document.createAttribute('hidden');
                         board.setAttributeNode(att);
+                        btn_icon.classList.remove('fa-arrow-circle-up');
+                        btn_icon.classList.add('fa-arrow-circle-down');
+
                     }
                 });
                 openButton.addEventListener('click', function () {
@@ -86,13 +139,13 @@ dom = {
         var doneStatusArray = [];
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].status_id === 1) {
-                newStatusArray.push('<div>' + cards[i].title + '</div>');
+                newStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 2) {
-                inProgressStatusArray.push('<div>' + cards[i].title + '</div>');
+                inProgressStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 3) {
-                testingStatusArray.push('<div>' + cards[i].title + '</div>');
+                testingStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 4) {
-                doneStatusArray.push('<div>' + cards[i].title + '</div>');
+                doneStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             }
         }
         statusColumns.statusId1.innerHTML = newStatusArray.join('');
@@ -129,7 +182,19 @@ dom = {
             });
         });
     },
-};
+    dragAndDrop: function () {
+        var boardDetailsContainers = document.getElementsByClassName("dragCont");
+        let containers = Array.prototype.slice.call(boardDetailsContainers);
+        let drake = dragula({containers: containers});
+        drake.on('drop', function (el) {
+            let cardId = Number(el.id);
+            let boardId = parseInt(el.parentNode.parentNode.parentNode.previousSibling.id)
+            let parent = el.parentNode;
+            let newStatus = parent.id;
+            newStatus = parseInt(newStatus.charAt(8));
+        })
+    }
+}
 
 function appendToElement(elementToExtend, textToAppend) {
     let fakeDiv = document.createElement('div');
