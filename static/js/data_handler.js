@@ -147,6 +147,11 @@ dataHandler = {
             }
         }
         return cards;
+    },
+    editTitle: function(cardId,newTitle) {
+        card = dataHandler.getCard(cardId);
+        card.title = newTitle;
+        this._saveData();
     }
 }
 
