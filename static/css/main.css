@@ -25,7 +25,8 @@ body {
 .card {
     border-radius: 1px !important;
     box-shadow: 2px 5px 5px gray;
-    padding: 0px 15px 0px 15px;
+    padding: 0 15px 0 15px;
+    margin-bottom: 5px;
     height: 15rem;
 }
 
@@ -76,4 +77,8 @@ span {
 #exampleModalCenter, #newcard {
     font-family: 'Questrial', sans-serif !important;
     font-size: 0.5em !important;
+}
+
+#addBoard {
+    font-family: 'Questrial', sans-serif !important;
 }

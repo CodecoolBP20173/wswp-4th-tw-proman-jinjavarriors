@@ -41,7 +41,7 @@ dom = {
                 var boardContainer = `<div class="board-container" id="${id}">
                                             <div class="board-header font-weight-bold col-12">${title}
                                                 <button type="button" class="btn btn-success addCard" data-toggle="modal" data-target="#newcard">
-                                                    <i id="addCard${id}" class="far fa-plus-square"></i>
+                                                    Add card <i id="addCard${id}" class="far fa-plus-square"></i>
                                                 </button>
                                                 <button class="btn btn-info arrow" id="btn-${id}">
                                                     <i id="openArrow${id}" class="fas"></i>
