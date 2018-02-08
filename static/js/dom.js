@@ -50,7 +50,15 @@ dom = {
 
                 let openButton = document.getElementById("btn-" + id.toString());
                 openButton.addEventListener("click", function () {
-                    dom.loadCards(id)
+                    dom.loadCards(id);
+                    let board = document.getElementById('board' + boards[i].id);
+
+                    if (board.hasAttribute('hidden')) {
+                        board.removeAttribute('hidden');
+                    } else {
+                        let att = document.createAttribute('hidden');
+                        board.setAttributeNode(att);
+                    }
                 });
                 openButton.addEventListener('click', function () {
                     dataHandler.getBoard(id, dataHandler.saveBoardStatus);
@@ -70,30 +78,29 @@ dom = {
         // shows the cards of a board
         // it adds necessary event listeners also
         let board = document.getElementById('board' + boardId);
-        let row = document.getElementsByClassName('board-content row')[boardId - 1];
 
-        if (row.hasAttribute('hidden')) {
-            row.removeAttribute('hidden');
-        } else {
-            let att = document.createAttribute('hidden');
-            row.setAttributeNode(att);
-        }
         var statusColumns = board.getElementsByClassName('board-details-content');
+        var newStatusArray = [];
+        var inProgressStatusArray = [];
+        var testingStatusArray = [];
+        var doneStatusArray = [];
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].status_id === 1) {
-                let content = statusColumns.statusId1.innerHTML;
-                statusColumns.statusId1.innerHTML = '<div>' + cards[i].title + '</div>';
+                newStatusArray.push('<div>' + cards[i].title + '</div>');
             } else if (cards[i].status_id === 2) {
-                let content = statusColumns.statusId2.innerHTML;
-                statusColumns.statusId2.innerHTML = '<div>' + cards[i].title + '</div>';
+                inProgressStatusArray.push('<div>' + cards[i].title + '</div>');
             } else if (cards[i].status_id === 3) {
-                let content = statusColumns.statusId3.innerHTML;
-                statusColumns.statusId3.innerHTML = '<div>' + cards[i].title + '</div>';
+                testingStatusArray.push('<div>' + cards[i].title + '</div>');
             } else if (cards[i].status_id === 4) {
-                let content = statusColumns.statusId4.innerHTML;
-                statusColumns.statusId4.innerHTML = '<div>' + cards[i].title + '</div>';
+                doneStatusArray.push('<div>' + cards[i].title + '</div>');
             }
         }
+        statusColumns.statusId1.innerHTML = newStatusArray.join('');
+        statusColumns.statusId2.innerHTML = inProgressStatusArray.join('');
+        statusColumns.statusId3.innerHTML = testingStatusArray.join('');
+        statusColumns.statusId4.innerHTML = doneStatusArray.join('');
+
+
     },
     // here comes more features
     createNewBoard: function () {
@@ -117,7 +124,9 @@ dom = {
         saveButton.addEventListener("click", function () {
             var cardTitle = document.getElementById("cardInput").value;
             var statusId = 1;
-            dataHandler.createNewCard(cardTitle, boardId, statusId, dom.showCards);
+            dataHandler.createNewCard(cardTitle, boardId, statusId, function () {
+                dom.loadCards(boardId)
+            });
         });
     },
 };
