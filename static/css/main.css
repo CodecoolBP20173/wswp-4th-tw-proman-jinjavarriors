@@ -22,6 +22,8 @@ body {
     border-radius: 1px !important;
     box-shadow: 2px 3px 5px gray;
     padding: 0px 5px 0px 5px;
+    height: 15rem;
+    width: 15rem;
 }
 
 .nav-link {
