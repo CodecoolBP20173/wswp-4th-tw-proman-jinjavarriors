@@ -29,6 +29,23 @@ body {
     font-size: 1.4em;
 }
 
+.board-container {
+    margin-top: 50px;
+    border-bottom: 1px solid #242424;
+}
+
+.board-header {
+    font-size: 32pt;
+}
+
+.board-header, .board-details-header, .nav-link {
+    font-family: 'Questrial', sans-serif;
+}
+
+.board-details-header {
+    font-size: 20pt;
+}
+
 #newCardBtn, #saveBtn {
     font-weight: bold;
 !important;
