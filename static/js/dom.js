@@ -85,11 +85,11 @@ dom = {
                                             </div>`;
 
                 appendToElement(element, boardContainer);
-                if (boards[i].is_active) {
+                if (boards[id - 1].is_active) {
                     appendToElement(element, boardContentActive);
                     let btn_icon = document.getElementById('openArrow' + id);
                     btn_icon.classList.add('fa-arrow-circle-up');
-                } else if (!boards[i].is_active) {
+                } else if (!boards[id - 1].is_active) {
                     appendToElement(element, boardContentInactive);
                     let btn_icon = document.getElementById('openArrow' + id);
                     btn_icon.classList.add('fa-arrow-circle-down');
@@ -98,7 +98,7 @@ dom = {
                 let openButton = document.getElementById("btn-" + id.toString());
                 openButton.addEventListener("click", function () {
                     dom.loadCards(id);
-                    let board = document.getElementById('board' + boards[i].id);
+                    let board = document.getElementById('board' + boards[id - 1].id);
                     let btn_icon = document.getElementById('openArrow' + id);
                     if (board.hasAttribute('hidden')) {
                         board.removeAttribute('hidden');
