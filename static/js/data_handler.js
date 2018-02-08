@@ -36,7 +36,7 @@ dataHandler = {
         }
     },
 
-        getStatuses: function (callback) {
+    getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
         callback(this._data.statuses)
     },
@@ -67,6 +67,8 @@ dataHandler = {
             'is_active': true
         });
         this._saveData();
+        callback();
+
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
         var newId = this.getNewId('card');
