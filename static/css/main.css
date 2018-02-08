@@ -3,6 +3,12 @@ body {
     font-family:"Reenie Beanie",arial,sans-serif !important;
 }
 
-#boards {
-    background-color: green;
+.arrow {
+    position: absolute;
+    right: 14px;
+}
+
+.addCard {
+    position: absolute;
+    right: 56px;
 }
