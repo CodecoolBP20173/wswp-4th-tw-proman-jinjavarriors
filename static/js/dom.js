@@ -30,23 +30,34 @@ dom = {
 
         }
 
-        var element = document.getElementsByClassName("board-main")[0];
+        //Generate board container
+        dataHandler.getStatuses(function (statuses){
+            var element = document.getElementsByClassName("board-main")[0];
+            console.log(statuses);
+            for (let i = 0; i < titles.length; i++) {
+                let id = ids[i];
+                let title = titles[i];
 
-        for (let i = 0; i < titles.length; i++) {
-            let id = ids[i];
-            let title = titles[i];
+                var boardContainer = `<div class="board-container" id="${id}"><div class="board-header">${title}<div><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newcard">+</button></div><button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
+                var boardContentActive = `<div id="board${id}" class="board-content row"><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[0].name}</div><div id="statusId${statuses[0].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[1].name}</div><div id="statusId${statuses[1].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[2].name}</div><div id="statusId${statuses[2].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[3].name}</div><div id="statusId${statuses[3].id}" class="board-details-content"></div></div></div>`;
+                var boardContentInactive = `<div id="board${id}" class="board-content row"><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[0].name}</div><div id="statusId${statuses[0].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[1].name}</div><div id="statusId${statuses[1].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[2].name}</div><div id="statusId${statuses[2].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[3].name}</div><div id="statusId${statuses[3].id}" class="board-details-content"></div></div></div>`;
 
-            var nodeOpen = `<div class="board-container" id="${id}"><div class="board-header">${title}<button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
-            var nodeOpenHidden = '<div class="board-content row" hidden>' + '<div><button type="button" class="btn btn-info btn-lg addCard" data-toggle="modal" data-target="#newcard">+</button></div>' + '<div class="board-details-container col-md-3 col-sm-6 col-12">container<div class="board-details-header">header</div><div class="board-details-content">content</div></div>'.repeat(4) + '</div>';
+                appendToElement(element, boardContainer);
+                if (boards[i].is_active){
+                    appendToElement(element, boardContentActive);
+                } else if (!boards[i].is_active) {
+                    appendToElement(element, boardContentInactive);
+                }
 
-            appendToElement(element, nodeOpen);
-            appendToElement(element, nodeOpenHidden);
+                let openButton = document.getElementById("btn-" + id.toString());
+                openButton.addEventListener("click", function () {
+                    dom.loadCards(id)
+                })
 
-            let openButton = document.getElementById("btn-" + id.toString());
-            openButton.addEventListener("click", function () {
-                dom.loadCards(id)
-            });
-        }
+            }
+        });
+
+
         dom.isFirstLoad = false;
     },
     loadCards: function (boardId) {
@@ -56,8 +67,9 @@ dom = {
     showCards: function (cards, boardId) {
         // shows the cards of a board
         // it adds necessary event listeners also
-
-        let board = document.getElementById(boardId);
+        console.log(cards);
+        let board = document.getElementById('board' + boardId);
+        console.log(board);
         let row = document.getElementsByClassName('board-content row')[boardId - 1];
         if (row.hasAttribute('hidden')) {
             row.removeAttribute('hidden');
@@ -65,6 +77,23 @@ dom = {
             let att = document.createAttribute('hidden');
             row.setAttributeNode(att);
         }
+        var statusColumns = board.getElementsByClassName('board-details-content');
+        for (let i = 0; i < cards.length; i++) {
+            if (cards[i].id === 1){
+                let content = statusColumns.statusId1.innerHTML;
+                statusColumns.statusId1.innerHTML = '<div>' + cards[i].title + '</div>';
+            } else if (cards[i].id === 2){
+                let content = statusColumns.statusId2.innerHTML;
+                statusColumns.statusId2.innerHTML = '<div>' + cards[i].title + '</div>';
+            } else if (cards[i].id === 3){
+                let content = statusColumns.statusId3.innerHTML;
+                statusColumns.statusId3.innerHTML = '<div>' + cards[i].title + '</div>';
+            } else if (cards[i].id === 4){
+                let content = statusColumns.statusId4.innerHTML;
+                statusColumns.statusId4.innerHTML = '<div>' + cards[i].title + '</div>';
+            }
+        }
+
 
     },
     // here comes more features
