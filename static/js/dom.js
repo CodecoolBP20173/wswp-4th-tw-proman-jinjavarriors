@@ -108,7 +108,7 @@ dom = {
         var boardId;
         for (let addCardBtn of addCardArray) {
             addCardBtn.addEventListener("click", function () {
-                boardId = addCardBtn.parentElement.parentElement.id;
+                boardId = parseInt(addCardBtn.parentElement.parentElement.id);
             });
         }
         ;
