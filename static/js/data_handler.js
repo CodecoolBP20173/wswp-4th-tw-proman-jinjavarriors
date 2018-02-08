@@ -165,7 +165,7 @@ dataHandler = {
         debugger;
         for (var i = 0; i < cards.length; i++) {
             for (var j = 0; j < cardsLength; j++) {
-                if (cards[i] == dataHandler._data.cards[j].id) {
+                if (cards[i].charAt(4) == dataHandler._data.cards[j].id) {
                     cardsAndDetails.push(dataHandler._data.cards[j]);
                 }
             }
@@ -181,8 +181,8 @@ dataHandler = {
         for (let cardId in newOrder) {
             card = dataHandler.getCard(parseInt(cardId));
             card.order = newOrder[cardId];
-            this._saveData();
         }
+        this._saveData();
 
     }
 }

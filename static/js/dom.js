@@ -140,13 +140,13 @@ dom = {
         var colors = ['#ff7eb9', '#7afcff', '#feff9c', '#cdf670'];
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].status_id === 1) {
-                newStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
+                newStatusArray.push(`<div class="card" id="card${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 2) {
-                inProgressStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
+                inProgressStatusArray.push(`<div class="card" id="card${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 3) {
-                testingStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
+                testingStatusArray.push(`<div class="card" id="card${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 4) {
-                doneStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
+                doneStatusArray.push(`<div class="card" id="card${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
             }
         }
         statusColumns.statusId1.innerHTML = newStatusArray.join('');
@@ -191,19 +191,21 @@ dom = {
         var cards = document.getElementsByClassName("card");
         for (let card of cards) {
             card.addEventListener("focusout", function () {
-                let cardId = parseInt(this.id);
+                let cardId = this.id;
+                cardId = parseInt(cardId.charAt(4));
                 let newTitle = this.innerHTML;
                 dataHandler.editTitle(cardId, newTitle);
             });
             card.addEventListener("mouseup", function () {
                 let _this = this;
                 setTimeout(function () {
-                    let cardId = parseInt(_this.id);
-                    let currentCard = document.getElementById(cardId);
+                    let currentCard = document.getElementById(_this.id);
                     let statusId = currentCard.parentNode.id;
                     statusId = parseInt(statusId.charAt(8));
                     let boardId = parseInt(currentCard.parentNode.parentNode.parentNode.previousSibling.id);
-                    setOrder(boardId, statusId);
+                    for(let i=1;i<5;i++){
+                        setOrder(boardId, i);
+                    }
                 }, 1000);
 
             })
@@ -215,8 +217,9 @@ dom = {
         let containers = Array.prototype.slice.call(boardDetailsContainers);
         let drake = dragula({containers: containers});
         drake.on('drop', function (el) {
-            let cardId = Number(el.id);
-            let boardId = parseInt(el.parentNode.parentNode.parentNode.previousSibling.id)
+            let cardId = el.id;
+            cardId = parseInt(cardId.charAt(4));
+            let boardId = parseInt(el.parentNode.parentNode.parentNode.previousSibling.id);
             let parent = el.parentNode;
             let newStatus = parent.id;
             newStatus = parseInt(newStatus.charAt(8));
