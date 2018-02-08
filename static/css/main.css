@@ -1,3 +1,8 @@
+body {
+    font-size: 24pt !important;
+    font-family:"Reenie Beanie",arial,sans-serif !important;
+}
+
 #boards {
     background-color: green;
 }
