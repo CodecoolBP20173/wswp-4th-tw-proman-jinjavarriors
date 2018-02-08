@@ -62,6 +62,7 @@ dataHandler = {
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].id === cardId) {
                 card = {
+                    id: cards[i].id,
                     title: cards[i].title,
                     board_id: cards[i].board_id,
                     status_id: cards[i].status_id,
@@ -136,11 +137,13 @@ dataHandler = {
         dataHandler._saveData();
     },
     editCard: function (boardId, cardId, statusId) {
-        let cards = dataHandler.getCardsByBoardId(boardId);
+        let cards = dataHandler.returnCards(boardId);
         let card;
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].id === cardId) {
-                card = dataHandler.getCard(cardId);
+                card = dataHandler.getCard(cardId,function () {
+                    
+                });
             }
         }
         card.status_id = statusId;
@@ -153,5 +156,17 @@ dataHandler = {
             }
         }
         dataHandler._saveData();
+    },
+    returnCards: function (boardId) {
+        let all_cards = this._data.cards;
+        let cards = [];
+        for (let i = 0; i < all_cards.length; i++) {
+            let card = all_cards[i];
+            if (card.board_id === boardId) {
+                cards.push(card);
+            }
+        }
+        return cards;
     }
 }
+

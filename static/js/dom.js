@@ -192,7 +192,9 @@ dom = {
             let parent = el.parentNode;
             let newStatus = parent.id;
             newStatus = parseInt(newStatus.charAt(8));
+            dataHandler.editCard(boardId,cardId,newStatus);
         })
+
     }
 }
 
