@@ -12,3 +12,8 @@ body {
     position: absolute;
     right: 56px;
 }
+
+.nav-link {
+    font-weight: bold;
+    font-size: 1.4em;
+}
