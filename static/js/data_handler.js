@@ -26,15 +26,33 @@ dataHandler = {
     },
     getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
+        var boards = this.getBoards();
+        for (let i = 0; i < boards.length; i++) {
+            let board = boards[i];
+            if (board.id === boardId) {
+                callback(board)
+            }
+        }
     },
-    getStatuses: function (callback) {
+
+        getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
+        callback(this._data.statuses)
     },
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
     },
     getCardsByBoardId: function (boardId, callback) {
         // the cards are retrieved and then the callback function is called with the cards
+        let all_cards = this._data.cards;
+        let cards = [];
+        for (let i = 0; i < all_cards.length; i++) {
+            let card = all_cards[i];
+            if (card.board_id === boardId) {
+                cards.push(card)
+            }
+        }
+        callback(cards, boardId);
     },
     getCard: function (cardId, callback) {
         // the card is retrieved and then the callback function is called with the card
@@ -48,10 +66,20 @@ dataHandler = {
             'is_active': true
         });
         this._saveData();
-        callback()
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
-        // creates new card, saves it and calls the callback function with its data
+        var newId = this.getNewId('card');
+        this._data.cards.push({
+            'id': newId,
+            'title': cardTitle,
+            'board_id': boardId,
+            'status_id': statusId
+        });
+        this._saveData();
+        var cards = dataHandler.getCardsByBoardId(boardId, function () {
+
+        });
+        callback(cards, boardId);
     },
     // here comes more features
     getNewId: function (table) {
