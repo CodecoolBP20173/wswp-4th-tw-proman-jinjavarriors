@@ -4,6 +4,7 @@ dom = {
         dom.createNewBoard();
         dom.loadBoards();
         dom.createNewCard();
+        dom.dragAndDrop();
     },
     isFirstLoad: true,
 
@@ -36,7 +37,7 @@ dom = {
             for (let i = 0; i < titles.length; i++) {
                 let id = ids[i];
                 let title = titles[i];
-                
+
                 var boardContainer = `<div class="board-container" id="${id}">
                                             <div class="board-header font-weight-bold col-12">${title}
                                                 <button type="button" class="btn btn-primary addCard" data-toggle="modal" data-target="#newcard">
@@ -50,37 +51,37 @@ dom = {
                 var boardContentActive = `<div id="board${id}" class="board-content row">
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[0].name}</div>
-                                                <div id="statusId${statuses[0].id}" class="board-details-content"></div>
+                                                <div id="statusId${statuses[0].id}" class="board-details-content dragCont h-100"></div>
                                             </div>
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
-                                            <div id="statusId${statuses[1].id}" class="board-details-content"></div>
+                                            <div id="statusId${statuses[1].id}" class="board-details-content dragCont h-100"></div>
                                             </div>
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[2].name}</div>
-                                                <div id="statusId${statuses[2].id}" class="board-details-content"></div>
+                                                <div id="statusId${statuses[2].id}" class="board-details-content dragCont h-100"></div>
                                             </div>
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[3].name}</div>
-                                                <div id="statusId${statuses[3].id}" class="board-details-content"></div>
+                                                <div id="statusId${statuses[3].id}" class="board-details-content dragCont h-100"></div>
                                             </div>
                                         </div>`;
                 var boardContentInactive = `<div id="board${id}" class="board-content row" hidden>
                                                 <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                     <div class="board-details-header font-weight-bold">${statuses[0].name}</div>
-                                                    <div id="statusId${statuses[0].id}" class="board-details-content"></div>
+                                                    <div id="statusId${statuses[0].id}" class="board-details-content dragCont h-100"></div>
                                                 </div>
                                                 <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                     <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
-                                                    <div id="statusId${statuses[1].id}" class="board-details-content"></div>
+                                                    <div id="statusId${statuses[1].id}" class="board-details-content dragCont h-100"></div>
                                                 </div>
                                                 <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                     <div class="board-details-header font-weight-bold">${statuses[2].name}</div>
-                                                    <div id="statusId${statuses[2].id}" class="board-details-content"></div>
+                                                    <div id="statusId${statuses[2].id}" class="board-details-content dragCont h-100"></div>
                                                 </div>
                                                 <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                     <div class="board-details-header font-weight-bold">${statuses[3].name}</div>
-                                                    <div id="statusId${statuses[3].id}" class="board-details-content"></div>
+                                                    <div id="statusId${statuses[3].id}" class="board-details-content dragCont h-100"></div>
                                                 </div>
                                             </div>`;
 
@@ -138,13 +139,13 @@ dom = {
         var doneStatusArray = [];
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].status_id === 1) {
-                newStatusArray.push('<div>' + cards[i].title + '</div>');
+                newStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 2) {
-                inProgressStatusArray.push('<div>' + cards[i].title + '</div>');
+                inProgressStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 3) {
-                testingStatusArray.push('<div>' + cards[i].title + '</div>');
+                testingStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 4) {
-                doneStatusArray.push('<div>' + cards[i].title + '</div>');
+                doneStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             }
         }
         statusColumns.statusId1.innerHTML = newStatusArray.join('');
@@ -181,7 +182,19 @@ dom = {
             });
         });
     },
-};
+    dragAndDrop: function () {
+        var boardDetailsContainers = document.getElementsByClassName("dragCont");
+        let containers = Array.prototype.slice.call(boardDetailsContainers);
+        let drake = dragula({containers: containers});
+        drake.on('drop', function (el) {
+            let cardId = Number(el.id);
+            let boardId = parseInt(el.parentNode.parentNode.parentNode.previousSibling.id)
+            let parent = el.parentNode;
+            let newStatus = parent.id;
+            newStatus = parseInt(newStatus.charAt(8));
+        })
+    }
+}
 
 function appendToElement(elementToExtend, textToAppend) {
     let fakeDiv = document.createElement('div');
