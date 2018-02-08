@@ -32,7 +32,6 @@ dom = {
         //Generate board container
         dataHandler.getStatuses(function (statuses){
             var element = document.getElementsByClassName("board-main")[0];
-            console.log(statuses);
             for (let i = 0; i < titles.length; i++) {
                 let id = ids[i];
                 let title = titles[i];
@@ -51,6 +50,9 @@ dom = {
                 let openButton = document.getElementById("btn-" + id.toString());
                 openButton.addEventListener("click", function () {
                     dom.loadCards(id)
+                });
+                openButton.addEventListener('click', function () {
+                    dataHandler.getBoard(id, dataHandler.saveBoardStatus);
                 })
 
             }
@@ -66,7 +68,6 @@ dom = {
     showCards: function (cards, boardId) {
         // shows the cards of a board
         // it adds necessary event listeners also
-        console.log(cards);
         let board = document.getElementById('board' + boardId);
         let row = document.getElementsByClassName('board-content row')[boardId - 1];
         if (row.hasAttribute('hidden')) {

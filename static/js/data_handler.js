@@ -23,10 +23,11 @@ dataHandler = {
         // the boards are retrieved and then the callback function is called with the boards
         var boards = this._data.boards;
         callback(boards);
+
     },
     getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
-        var boards = this.getBoards();
+        var boards = this._data.boards;
         for (let i = 0; i < boards.length; i++) {
             let board = boards[i];
             if (board.id === boardId) {
@@ -103,5 +104,10 @@ dataHandler = {
         } else {
             return true;
         }
+    },
+
+    saveBoardStatus: function (board) {
+        board.is_active = !board.is_active;
+        dataHandler._saveData();
     }
 };
