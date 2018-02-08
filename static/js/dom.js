@@ -36,7 +36,7 @@ dom = {
             for (let i = 0; i < titles.length; i++) {
                 let id = ids[i];
                 let title = titles[i];
-                
+
                 var boardContainer = `<div class="board-container" id="${id}">
                                             <div class="board-header font-weight-bold col-12">${title}
                                                 <button type="button" class="btn btn-primary addCard" data-toggle="modal" data-target="#newcard">
@@ -50,37 +50,37 @@ dom = {
                 var boardContentActive = `<div id="board${id}" class="board-content row">
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[0].name}</div>
-                                                <div id="statusId${statuses[0].id}" class="board-details-content"></div>
+                                                <div id="statusId${statuses[0].id}" class="board-details-content cards"></div>
                                             </div>
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
-                                            <div id="statusId${statuses[1].id}" class="board-details-content"></div>
+                                            <div id="statusId${statuses[1].id}" class="board-details-content cards"></div>
                                             </div>
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[2].name}</div>
-                                                <div id="statusId${statuses[2].id}" class="board-details-content"></div>
+                                                <div id="statusId${statuses[2].id}" class="board-details-content cards"></div>
                                             </div>
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[3].name}</div>
-                                                <div id="statusId${statuses[3].id}" class="board-details-content"></div>
+                                                <div id="statusId${statuses[3].id}" class="board-details-content cards"></div>
                                             </div>
                                         </div>`;
                 var boardContentInactive = `<div id="board${id}" class="board-content row" hidden>
                                                 <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                     <div class="board-details-header font-weight-bold">${statuses[0].name}</div>
-                                                    <div id="statusId${statuses[0].id}" class="board-details-content"></div>
+                                                    <div id="statusId${statuses[0].id}" class="board-details-content cards"></div>
                                                 </div>
                                                 <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                     <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
-                                                    <div id="statusId${statuses[1].id}" class="board-details-content"></div>
+                                                    <div id="statusId${statuses[1].id}" class="board-details-content cards"></div>
                                                 </div>
                                                 <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                     <div class="board-details-header font-weight-bold">${statuses[2].name}</div>
-                                                    <div id="statusId${statuses[2].id}" class="board-details-content"></div>
+                                                    <div id="statusId${statuses[2].id}" class="board-details-content cards"></div>
                                                 </div>
                                                 <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                     <div class="board-details-header font-weight-bold">${statuses[3].name}</div>
-                                                    <div id="statusId${statuses[3].id}" class="board-details-content"></div>
+                                                    <div id="statusId${statuses[3].id}" class="board-details-content cards"></div>
                                                 </div>
                                             </div>`;
 
