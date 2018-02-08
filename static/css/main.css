@@ -1,3 +1,7 @@
+html {
+    height: 100%;
+}
+
 body {
     font-size: 24pt !important;
     font-family: "Reenie Beanie", arial, sans-serif !important;
@@ -20,8 +24,9 @@ body {
 
 .card {
     border-radius: 1px !important;
-    box-shadow: 2px 3px 5px gray;
-    padding: 0px 5px 0px 5px;
+    box-shadow: 2px 5px 5px gray;
+    padding: 0px 15px 0px 15px;
+    height: 15rem;
 }
 
 .nav-link {
@@ -31,7 +36,6 @@ body {
 
 .board-container {
     margin-top: 50px;
-    border-bottom: 1px solid #242424;
 }
 
 .board-header {
@@ -47,11 +51,19 @@ body {
 }
 
 #newCardBtn, #saveBtn {
-    font-weight: bold;
-!important;
+    font-weight: bold !important;
 }
 
 .board-details-container {
-    border-right: 1px solid #242424;
-    border-left: 1px solid #242424;
+    border-top: 1px solid #242424;
+    padding: 10px 0 10px 0;
+}
+
+.board-content {
+    background-color: #d0cbcb;
+    border-radius: 5px;
+}
+
+body {
+    background-color: #f0f0f0 !important;
 }
