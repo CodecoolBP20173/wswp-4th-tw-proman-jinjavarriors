@@ -162,7 +162,6 @@ dataHandler = {
         let cardsLength = dataHandler._data.cards.length;
 
         var cardsAndDetails = [];
-        debugger;
         for (var i = 0; i < cards.length; i++) {
             for (var j = 0; j < cardsLength; j++) {
                 if (cards[i].charAt(4) == dataHandler._data.cards[j].id) {
@@ -185,5 +184,5 @@ dataHandler = {
         this._saveData();
 
     }
-}
+};
 

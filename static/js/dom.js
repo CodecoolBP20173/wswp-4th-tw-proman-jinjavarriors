@@ -138,6 +138,10 @@ dom = {
         var testingStatusArray = [];
         var doneStatusArray = [];
         var colors = ['#ff7eb9', '#7afcff', '#feff9c', '#cdf670'];
+
+
+        cards.sort(compare);
+
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].status_id === 1) {
                 newStatusArray.push(`<div class="card" id="card${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
@@ -251,5 +255,19 @@ function setOrder(boardId, statusId) {
     dataHandler.saveOrders(newOrder);
 
 
+}
+
+function compare(a, b) {
+  // Use toUpperCase() to ignore character casing
+  const genreA = a.order;
+  const genreB = b.order;
+
+  let comparison = 0;
+  if (genreA > genreB) {
+    comparison = 1;
+  } else if (genreA < genreB) {
+    comparison = -1;
+  }
+  return comparison;
 }
 
