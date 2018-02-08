@@ -55,7 +55,7 @@ dom = {
                                             </div>
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
-                                            <div id="statusId${statuses[1].id}" class="board-details-content dragCont h-100"></div>
+                                                <div id="statusId${statuses[1].id}" class="board-details-content dragCont h-100"></div>
                                             </div>
                                             <div class="board-details-container col-md-3 col-sm-6 col-12">
                                                 <div class="board-details-header font-weight-bold">${statuses[2].name}</div>

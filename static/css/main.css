@@ -12,3 +12,26 @@ body {
     position: absolute;
     right: 56px;
 }
+
+.padding {
+  padding-left: 10% !important;
+  padding-right: 10% !important;
+}
+
+
+.card {
+    background-color: #FFFFA5 !important;
+    border-color: black !important;
+    padding: 0px 5px 0px 5px;
+}
+
+
+
+.nav-link {
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+#newCardBtn, #saveBtn {
+    font-weight: bold; !important;
+}
