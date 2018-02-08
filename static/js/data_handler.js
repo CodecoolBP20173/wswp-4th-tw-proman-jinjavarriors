@@ -55,22 +55,14 @@ dataHandler = {
         }
         callback(cards, boardId);
     },
-    getCard: function (cardId, callback) {
+    getCard: function (cardId) {
         // the card is retrieved and then the callback function is called with the card
-        let card;
         let cards = this._data.cards;
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].id === cardId) {
-                card = {
-                    id: cards[i].id,
-                    title: cards[i].title,
-                    board_id: cards[i].board_id,
-                    status_id: cards[i].status_id,
-                    order: cards[i].order
-                }
+                return cards[i];
             }
         }
-        return card;
     },
     createNewBoard: function (boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
@@ -137,25 +129,13 @@ dataHandler = {
         dataHandler._saveData();
     },
     editCard: function (boardId, cardId, statusId) {
-        let cards = dataHandler.returnCards(boardId);
-        let card;
-        for (let i = 0; i < cards.length; i++) {
-            if (cards[i].id === cardId) {
-                card = dataHandler.getCard(cardId,function () {
-                    
-                });
-            }
+        card = dataHandler.getCard(cardId);
+        if (card.board_id != boardId) {
+            throw "You cannot move card to another board!";
         }
         card.status_id = statusId;
-        for (let i = 0; i < this._data.cards.length; i++) {
-            if (this._data.cards[i].id === card.id) {
-                this._data.cards[i].title = card.title;
-                this._data.cards[i].board_id = card.board_id;
-                this._data.cards[i].status_id = card.status_id;
-                this._data.cards[i].order = card.order;
-            }
-        }
-        dataHandler._saveData();
+        card.board_id = boardId;
+        this._saveData();
     },
     returnCards: function (boardId) {
         let all_cards = this._data.cards;
