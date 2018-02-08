@@ -78,23 +78,27 @@ dom = {
             board.setAttributeNode(att);
         }
         var statusColumns = board.getElementsByClassName('board-details-content');
-        if (dom.isFirstLoad) {
-            for (let i = 0; i < cards.length; i++) {
-                if (cards[i].status_id === 1) {
-                    let content = statusColumns.statusId1.innerHTML;
-                    statusColumns.statusId1.innerHTML = content + '<div>' + cards[i].title + '</div>';
-                } else if (cards[i].status_id === 2) {
-                    let content = statusColumns.statusId2.innerHTML;
-                    statusColumns.statusId2.innerHTML = content + '<div>' + cards[i].title + '</div>';
-                } else if (cards[i].status_id === 3) {
-                    let content = statusColumns.statusId3.innerHTML;
-                    statusColumns.statusId3.innerHTML = content + '<div>' + cards[i].title + '</div>';
-                } else if (cards[i].status_id === 4) {
-                    let content = statusColumns.statusId4.innerHTML;
-                    statusColumns.statusId4.innerHTML = content + '<div>' + cards[i].title + '</div>';
-                }
+        var newStatusArray = [];
+        var inProgressStatusArray = [];
+        var testingStatusArray = [];
+        var doneStatusArray = [];
+        for (let i = 0; i < cards.length; i++) {
+            if (cards[i].status_id === 1) {
+                newStatusArray.push('<div>' + cards[i].title + '</div>');
+            } else if (cards[i].status_id === 2) {
+                inProgressStatusArray.push('<div>' + cards[i].title + '</div>');
+            } else if (cards[i].status_id === 3) {
+                testingStatusArray.push('<div>' + cards[i].title + '</div>');
+            } else if (cards[i].status_id === 4) {
+                doneStatusArray.push('<div>' + cards[i].title + '</div>');
             }
         }
+        statusColumns.statusId1.innerHTML = newStatusArray.join('');
+        statusColumns.statusId2.innerHTML = inProgressStatusArray.join('');
+        statusColumns.statusId3.innerHTML = testingStatusArray.join('');
+        statusColumns.statusId4.innerHTML = doneStatusArray.join('');
+
+
     },
     // here comes more features
     createNewBoard: function () {
