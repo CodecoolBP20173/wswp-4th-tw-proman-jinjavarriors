@@ -169,8 +169,10 @@ dom = {
     createNewBoard: function () {
         var saveButton = document.getElementById('saveBtn');
         saveButton.addEventListener('click', function () {
-            var boardTitle = document.getElementById('newBoardName').value;
+            var inputElement = document.getElementById('newBoardName');
+            var boardTitle = inputElement.value;
             dataHandler.createNewBoard(boardTitle, dom.loadBoards)
+            inputElement.value = "";
         });
     },
     createNewCard: function () {
@@ -185,12 +187,14 @@ dom = {
 
         var saveButton = document.getElementById('newCardBtn');
         saveButton.addEventListener("click", function () {
-            var cardTitle = document.getElementById("cardInput").value;
+            let inputElement = document.getElementById("cardInput");
+            var cardTitle = inputElement.value;
             var statusId = 1;
             var orderId = 1;
             dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, function () {
                 dom.loadCards(boardId)
-            });
+            })
+            inputElement.value = "";
         });
         var cards = document.getElementsByClassName("card");
         for (let card of cards) {
