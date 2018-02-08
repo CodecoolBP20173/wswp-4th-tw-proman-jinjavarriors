@@ -137,6 +137,7 @@ dom = {
         var inProgressStatusArray = [];
         var testingStatusArray = [];
         var doneStatusArray = [];
+        var colors = ['#ff7eb9', '#7afcff', '#feff9c', '#cdf670'];
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].status_id === 1) {
                 newStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
@@ -153,6 +154,11 @@ dom = {
         statusColumns.statusId3.innerHTML = testingStatusArray.join('');
         statusColumns.statusId4.innerHTML = doneStatusArray.join('');
 
+        let cardsDom = document.getElementsByClassName('card');
+        for (let i = 0; i < cardsDom.length; i++) {
+            var random_color = colors[Math.floor(Math.random() * colors.length)];
+            cardsDom[i].style.backgroundColor = random_color;
+        }
 
     },
     // here comes more features

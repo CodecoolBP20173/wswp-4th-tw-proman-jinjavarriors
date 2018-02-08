@@ -1,6 +1,6 @@
 body {
     font-size: 24pt !important;
-    font-family:"Reenie Beanie",arial,sans-serif !important;
+    font-family: "Reenie Beanie", arial, sans-serif !important;
 }
 
 .arrow {
@@ -14,18 +14,15 @@ body {
 }
 
 .padding {
-  padding-left: 10% !important;
-  padding-right: 10% !important;
+    padding-left: 10% !important;
+    padding-right: 10% !important;
 }
-
 
 .card {
-    background-color: #FFFFA5 !important;
-    border-color: black !important;
+    border-radius: 1px !important;
+    box-shadow: 2px 3px 5px gray;
     padding: 0px 5px 0px 5px;
 }
-
-
 
 .nav-link {
     font-weight: bold;
@@ -33,5 +30,6 @@ body {
 }
 
 #newCardBtn, #saveBtn {
-    font-weight: bold; !important;
+    font-weight: bold;
+!important;
 }
