@@ -140,13 +140,13 @@ dom = {
         var colors = ['#ff7eb9', '#7afcff', '#feff9c', '#cdf670'];
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].status_id === 1) {
-                newStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" contenteditable>` + cards[i].title + `</div>`);
+                newStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 2) {
-                inProgressStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" contenteditable>` + cards[i].title + `</div>`);
+                inProgressStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 3) {
-                testingStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" contenteditable>` + cards[i].title + `</div>`);
+                testingStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 4) {
-                doneStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" contenteditable>` + cards[i].title + `</div>`);
+                doneStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
             }
         }
         statusColumns.statusId1.innerHTML = newStatusArray.join('');
@@ -235,7 +235,7 @@ function appendToElement(elementToExtend, textToAppend) {
 }
 
 function setOrder(boardId, statusId) {
-    cards = dataHandler.returnCards(boardId);
+    cards = dataHandler.returnOnBoardCards(boardId);
     let newOrder = {};
     var counter = 1;
     for (let i = 0; i < cards.length; i++) {
