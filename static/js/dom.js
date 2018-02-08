@@ -70,28 +70,29 @@ dom = {
         // shows the cards of a board
         // it adds necessary event listeners also
         let board = document.getElementById('board' + boardId);
-        let row = document.getElementsByClassName('board-content row')[boardId - 1];
 
-        if (row.hasAttribute('hidden')) {
-            row.removeAttribute('hidden');
+        if (board.hasAttribute('hidden')) {
+            board.removeAttribute('hidden');
         } else {
             let att = document.createAttribute('hidden');
-            row.setAttributeNode(att);
+            board.setAttributeNode(att);
         }
         var statusColumns = board.getElementsByClassName('board-details-content');
-        for (let i = 0; i < cards.length; i++) {
-            if (cards[i].status_id === 1) {
-                let content = statusColumns.statusId1.innerHTML;
-                statusColumns.statusId1.innerHTML = '<div>' + cards[i].title + '</div>';
-            } else if (cards[i].status_id === 2) {
-                let content = statusColumns.statusId2.innerHTML;
-                statusColumns.statusId2.innerHTML = '<div>' + cards[i].title + '</div>';
-            } else if (cards[i].status_id === 3) {
-                let content = statusColumns.statusId3.innerHTML;
-                statusColumns.statusId3.innerHTML = '<div>' + cards[i].title + '</div>';
-            } else if (cards[i].status_id === 4) {
-                let content = statusColumns.statusId4.innerHTML;
-                statusColumns.statusId4.innerHTML = '<div>' + cards[i].title + '</div>';
+        if (dom.isFirstLoad) {
+            for (let i = 0; i < cards.length; i++) {
+                if (cards[i].status_id === 1) {
+                    let content = statusColumns.statusId1.innerHTML;
+                    statusColumns.statusId1.innerHTML = content + '<div>' + cards[i].title + '</div>';
+                } else if (cards[i].status_id === 2) {
+                    let content = statusColumns.statusId2.innerHTML;
+                    statusColumns.statusId2.innerHTML = content + '<div>' + cards[i].title + '</div>';
+                } else if (cards[i].status_id === 3) {
+                    let content = statusColumns.statusId3.innerHTML;
+                    statusColumns.statusId3.innerHTML = content + '<div>' + cards[i].title + '</div>';
+                } else if (cards[i].status_id === 4) {
+                    let content = statusColumns.statusId4.innerHTML;
+                    statusColumns.statusId4.innerHTML = content + '<div>' + cards[i].title + '</div>';
+                }
             }
         }
     },
