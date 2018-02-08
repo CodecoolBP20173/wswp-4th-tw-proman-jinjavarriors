@@ -155,7 +155,7 @@ dataHandler = {
         for (let i = 0; i < all_cards.length; i++) {
             let card = all_cards[i];
             if (card.dataset.boardid == boardId) {
-                cards.push(card.id);
+                cards.push(card.dataset.id);
             }
         }
 
@@ -165,7 +165,7 @@ dataHandler = {
         debugger;
         for (var i = 0; i < cards.length; i++) {
             for (var j = 0; j < cardsLength; j++) {
-                if (cards[i].charAt(4) == dataHandler._data.cards[j].id) {
+                if (cards[i] == dataHandler._data.cards[j].id) {
                     cardsAndDetails.push(dataHandler._data.cards[j]);
                 }
             }
