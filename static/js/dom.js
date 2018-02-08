@@ -139,13 +139,13 @@ dom = {
         var doneStatusArray = [];
         for (let i = 0; i < cards.length; i++) {
             if (cards[i].status_id === 1) {
-                newStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
+                newStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 2) {
-                inProgressStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
+                inProgressStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 3) {
-                testingStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
+                testingStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             } else if (cards[i].status_id === 4) {
-                doneStatusArray.push(`<div id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
+                doneStatusArray.push(`<div class="card" id=${cards[i].id} data-order="${cards[i].order}">` + cards[i].title + `</div>`);
             }
         }
         statusColumns.statusId1.innerHTML = newStatusArray.join('');
