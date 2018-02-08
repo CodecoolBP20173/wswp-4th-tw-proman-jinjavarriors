@@ -19,10 +19,9 @@ body {
 }
 
 
-.cards {
-    margin-top: 40px;
-    position: absolute;
-    width: 200px;
-    height: 160px;
-    background-color: #ffd998;
+.card {
+    background-color: #FFFFA5 !important;
+    border-color: black !important;
+    padding: 0px 5px 0px 5px;
 }
+
