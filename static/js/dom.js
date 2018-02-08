@@ -183,7 +183,8 @@ dom = {
         saveButton.addEventListener("click", function () {
             var cardTitle = document.getElementById("cardInput").value;
             var statusId = 1;
-            dataHandler.createNewCard(cardTitle, boardId, statusId, function () {
+            var orderId = 1;
+            dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, function () {
                 dom.loadCards(boardId)
             });
         });
@@ -192,9 +193,20 @@ dom = {
             card.addEventListener("focusout", function () {
                 let cardId = parseInt(this.id);
                 let newTitle = this.innerHTML;
-                debugger;
                 dataHandler.editTitle(cardId, newTitle);
             });
+            card.addEventListener("mouseup", function () {
+                let _this = this;
+                setTimeout(function () {
+                    let cardId = parseInt(_this.id);
+                    let currentCard = document.getElementById(cardId);
+                    let statusId = currentCard.parentNode.id;
+                    statusId = parseInt(statusId.charAt(8));
+                    let boardId = parseInt(currentCard.parentNode.parentNode.parentNode.previousSibling.id);
+                    setOrder(boardId, statusId);
+                }, 1000);
+
+            })
         }
 
     },
@@ -220,5 +232,21 @@ function appendToElement(elementToExtend, textToAppend) {
     fakeDiv.innerHTML = textToAppend;
     elementToExtend.appendChild(fakeDiv.firstChild);
     return elementToExtend.lastChild;
+}
+
+function setOrder(boardId, statusId) {
+    cards = dataHandler.returnCards(boardId);
+    let newOrder = {};
+    var counter = 1;
+    for (let i = 0; i < cards.length; i++) {
+        if (cards[i].status_id === statusId) {
+            newOrder[cards[i].id] = counter;
+            counter++;
+        }
+
+    }
+    dataHandler.saveOrders(newOrder);
+
+
 }
 

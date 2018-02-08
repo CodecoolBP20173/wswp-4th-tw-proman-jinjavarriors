@@ -76,13 +76,14 @@ dataHandler = {
         callback();
 
     },
-    createNewCard: function (cardTitle, boardId, statusId, callback) {
+    createNewCard: function (cardTitle, boardId, statusId, orderId, callback) {
         var newId = this.getNewId('card');
         this._data.cards.push({
             'id': newId,
             'title': cardTitle,
             'board_id': boardId,
-            'status_id': statusId
+            'status_id': statusId,
+            'order_id': orderId
         });
         this._saveData();
         var cards = dataHandler.getCardsByBoardId(boardId, function () {
@@ -152,6 +153,14 @@ dataHandler = {
         card = dataHandler.getCard(cardId);
         card.title = newTitle;
         this._saveData();
+    },
+    saveOrders: function (newOrder) {
+        for(let cardId in newOrder){
+            card = dataHandler.getCard(parseInt(cardId));
+            card.order = newOrder[cardId];
+            this._saveData();
+        }
+
     }
 }
 
