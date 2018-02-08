@@ -56,7 +56,24 @@
         </div>
     </div>
 </div>
-
+<!-- Modal -->
+<div id="newcard" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create new card</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" name="title" id="cardInput" value="Please enter a title">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="newCardBtn" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Board template -->
 <div class="board-content row" hidden>
     {% for iteration in range(4) %}

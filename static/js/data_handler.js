@@ -67,10 +67,20 @@ dataHandler = {
             'is_active': true
         });
         this._saveData();
-        callback()
     },
     createNewCard: function (cardTitle, boardId, statusId, callback) {
-        // creates new card, saves it and calls the callback function with its data
+        var newId = this.getNewId('card');
+        this._data.cards.push({
+            'id': newId,
+            'title': cardTitle,
+            'board_id': boardId,
+            'status_id': statusId
+        });
+        this._saveData();
+        var cards = dataHandler.getCardsByBoardId(boardId, function () {
+
+        });
+        callback(cards, boardId);
     },
     // here comes more features
     getNewId: function (table) {

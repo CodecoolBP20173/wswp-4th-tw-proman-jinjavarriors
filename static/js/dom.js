@@ -3,6 +3,7 @@ dom = {
     init: function () {
         dom.createNewBoard();
         dom.loadBoards();
+        dom.createNewCard();
     },
     isFirstLoad: true,
 
@@ -36,7 +37,7 @@ dom = {
                 let id = ids[i];
                 let title = titles[i];
 
-                var boardContainer = `<div class="board-container" id="${id}"><div class="board-header">${title}<div><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#newcard">+</button></div><button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
+                var boardContainer = `<div class="board-container" id="${id}"><div class="board-header">${title}<button type="button" class="btn btn-info btn-lg addCard" data-toggle="modal" data-target="#newcard">+</button><button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
                 var boardContentActive = `<div id="board${id}" class="board-content row"><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[0].name}</div><div id="statusId${statuses[0].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[1].name}</div><div id="statusId${statuses[1].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[2].name}</div><div id="statusId${statuses[2].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[3].name}</div><div id="statusId${statuses[3].id}" class="board-details-content"></div></div></div>`;
                 var boardContentInactive = `<div id="board${id}" class="board-content row" hidden><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[0].name}</div><div id="statusId${statuses[0].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[1].name}</div><div id="statusId${statuses[1].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[2].name}</div><div id="statusId${statuses[2].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header">${statuses[3].name}</div><div id="statusId${statuses[3].id}" class="board-details-content"></div></div></div>`;
 
@@ -93,8 +94,6 @@ dom = {
                 statusColumns.statusId4.innerHTML = '<div>' + cards[i].title + '</div>';
             }
         }
-
-
     },
     // here comes more features
     createNewBoard: function () {
@@ -102,6 +101,23 @@ dom = {
         saveButton.addEventListener('click', function () {
             var boardTitle = document.getElementById('newBoardName').value;
             dataHandler.createNewBoard(boardTitle, dom.loadBoards)
+        });
+    },
+    createNewCard: function () {
+        var addCardArray = document.getElementsByClassName("addCard");
+        var boardId;
+        for (let addCardBtn of addCardArray) {
+            addCardBtn.addEventListener("click", function () {
+                boardId = addCardBtn.parentElement.parentElement.id;
+            });
+        }
+        ;
+
+        var saveButton = document.getElementById('newCardBtn');
+        saveButton.addEventListener("click", function () {
+            var cardTitle = document.getElementById("cardInput").value;
+            var statusId = 1;
+            dataHandler.createNewCard(cardTitle, boardId, statusId, dom.showCards);
         });
     },
 };
