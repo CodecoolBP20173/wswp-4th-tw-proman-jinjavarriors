@@ -50,7 +50,15 @@ dom = {
 
                 let openButton = document.getElementById("btn-" + id.toString());
                 openButton.addEventListener("click", function () {
-                    dom.loadCards(id)
+                    dom.loadCards(id);
+                    let board = document.getElementById('board' + boards[i].id);
+
+                    if (board.hasAttribute('hidden')) {
+                        board.removeAttribute('hidden');
+                    } else {
+                        let att = document.createAttribute('hidden');
+                        board.setAttributeNode(att);
+                    }
                 });
                 openButton.addEventListener('click', function () {
                     dataHandler.getBoard(id, dataHandler.saveBoardStatus);
@@ -71,12 +79,6 @@ dom = {
         // it adds necessary event listeners also
         let board = document.getElementById('board' + boardId);
 
-        if (board.hasAttribute('hidden')) {
-            board.removeAttribute('hidden');
-        } else {
-            let att = document.createAttribute('hidden');
-            board.setAttributeNode(att);
-        }
         var statusColumns = board.getElementsByClassName('board-details-content');
         var newStatusArray = [];
         var inProgressStatusArray = [];
@@ -122,7 +124,9 @@ dom = {
         saveButton.addEventListener("click", function () {
             var cardTitle = document.getElementById("cardInput").value;
             var statusId = 1;
-            dataHandler.createNewCard(cardTitle, boardId, statusId, dom.showCards);
+            dataHandler.createNewCard(cardTitle, boardId, statusId, function () {
+                dom.loadCards(boardId)
+            });
         });
     },
 };
