@@ -25,3 +25,13 @@ body {
     padding: 0px 5px 0px 5px;
 }
 
+
+
+.nav-link {
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+#newCardBtn, #saveBtn {
+    font-weight: bold; !important;
+}
