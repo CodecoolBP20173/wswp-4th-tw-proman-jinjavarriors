@@ -37,15 +37,22 @@ dom = {
                 let id = ids[i];
                 let title = titles[i];
 
-                var boardContainer = `<div class="board-container" id="${id}"><div class="board-header">${title}<button type="button" class="btn btn-info btn-lg addCard" data-toggle="modal" data-target="#newcard">+</button><button class="btn btn-info" id="btn-${id}">V</button></div></div>`;
+                var boardContainer = `<div class="board-container" id="${id}"><div class="board-header font-weight-bold col-6">${title}<button type="button" class="btn btn-primary addCard" data-toggle="modal" data-target="#newcard"><i class="far fa-plus-square"></i></button><button class="btn btn-info" id="btn-${id}"><i class="fas"></i></button></div></div>`;
                 var boardContentActive = `<div id="board${id}" class="board-content row"><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header font-weight-bold">${statuses[0].name}</div><div id="statusId${statuses[0].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header font-weight-bold">${statuses[1].name}</div><div id="statusId${statuses[1].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header font-weight-bold">${statuses[2].name}</div><div id="statusId${statuses[2].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header font-weight-bold">${statuses[3].name}</div><div id="statusId${statuses[3].id}" class="board-details-content"></div></div></div>`;
                 var boardContentInactive = `<div id="board${id}" class="board-content row" hidden><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header font-weight-bold">${statuses[0].name}</div><div id="statusId${statuses[0].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header font-weight-bold">${statuses[1].name}</div><div id="statusId${statuses[1].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header font-weight-bold">${statuses[2].name}</div><div id="statusId${statuses[2].id}" class="board-details-content"></div></div><div class="board-details-container col-md-3 col-sm-6 col-12"><div class="board-details-header font-weight-bold">${statuses[3].name}</div><div id="statusId${statuses[3].id}" class="board-details-content"></div></div></div>`;
+
 
                 appendToElement(element, boardContainer);
                 if (boards[i].is_active) {
                     appendToElement(element, boardContentActive);
+                    let btn_id = 'btn-' + id;
+                    let btn_icon = document.getElementById(btn_id).firstChild;
+                    btn_icon.classList.add('fa-arrow-circle-up');
                 } else if (!boards[i].is_active) {
                     appendToElement(element, boardContentInactive);
+                    let btn_id = 'btn-' + id;
+                    let btn_icon = document.getElementById(btn_id).firstChild;
+                    btn_icon.classList.add('fa-arrow-circle-down');
                 }
 
                 let openButton = document.getElementById("btn-" + id.toString());
@@ -53,11 +60,18 @@ dom = {
                     dom.loadCards(id);
                     let board = document.getElementById('board' + boards[i].id);
 
+                    let btn_id = 'btn-' + id;
+                    let btn_icon = document.getElementById(btn_id).firstChild;
                     if (board.hasAttribute('hidden')) {
                         board.removeAttribute('hidden');
+                        btn_icon.classList.remove('fa-arrow-circle-down');
+                        btn_icon.classList.add('fa-arrow-circle-up');
                     } else {
                         let att = document.createAttribute('hidden');
                         board.setAttributeNode(att);
+                        btn_icon.classList.remove('fa-arrow-circle-up');
+                        btn_icon.classList.add('fa-arrow-circle-down');
+
                     }
                 });
                 openButton.addEventListener('click', function () {
