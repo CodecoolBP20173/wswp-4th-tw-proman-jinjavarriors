@@ -55,8 +55,14 @@ dataHandler = {
         }
         callback(cards, boardId);
     },
-    getCard: function (cardId, callback) {
+    getCard: function (cardId) {
         // the card is retrieved and then the callback function is called with the card
+        let cards = this._data.cards;
+        for (let i = 0; i < cards.length; i++) {
+            if (cards[i].id === cardId) {
+                return cards[i];
+            }
+        }
     },
     createNewBoard: function (boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
@@ -70,13 +76,14 @@ dataHandler = {
         callback();
 
     },
-    createNewCard: function (cardTitle, boardId, statusId, callback) {
+    createNewCard: function (cardTitle, boardId, statusId, orderId, callback) {
         var newId = this.getNewId('card');
         this._data.cards.push({
             'id': newId,
             'title': cardTitle,
             'board_id': boardId,
-            'status_id': statusId
+            'status_id': statusId,
+            'order_id': orderId
         });
         this._saveData();
         var cards = dataHandler.getCardsByBoardId(boardId, function () {
@@ -121,5 +128,61 @@ dataHandler = {
     saveBoardStatus: function (board) {
         board.is_active = !board.is_active;
         dataHandler._saveData();
+    },
+    editCard: function (boardId, cardId, statusId) {
+        card = dataHandler.getCard(cardId);
+        if (card.board_id != boardId) {
+            throw "You cannot move card to another board!";
+        }
+        card.status_id = statusId;
+        card.board_id = boardId;
+        this._saveData();
+    },
+    returnCards: function (boardId) {
+        let all_cards = this._data.cards;
+        let cards = [];
+        for (let i = 0; i < all_cards.length; i++) {
+            let card = all_cards[i];
+            if (card.board_id === boardId) {
+                cards.push(card);
+            }
+        }
+        return cards;
+    },
+    returnOnBoardCards: function (boardId) {
+        let all_cards = document.getElementsByClassName("card");
+        let cards = [];
+        for (let i = 0; i < all_cards.length; i++) {
+            let card = all_cards[i];
+            if (card.dataset.boardid == boardId) {
+                cards.push(card.dataset.id);
+            }
+        }
+
+        let cardsLength = dataHandler._data.cards.length;
+
+        var cardsAndDetails = [];
+        for (var i = 0; i < cards.length; i++) {
+            for (var j = 0; j < cardsLength; j++) {
+                if (cards[i] == dataHandler._data.cards[j].id) {
+                    cardsAndDetails.push(dataHandler._data.cards[j]);
+                }
+            }
+        }
+        return cardsAndDetails;
+    },
+    editTitle: function (cardId, newTitle) {
+        card = dataHandler.getCard(cardId);
+        card.title = newTitle;
+        this._saveData();
+    },
+    saveOrders: function (newOrder) {
+        for (let cardId in newOrder) {
+            card = dataHandler.getCard(parseInt(cardId));
+            card.order = newOrder[cardId];
+        }
+        this._saveData();
+
     }
 };
+
