@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="registration-container container">
+        <div class="registration-content">
+            <form action="{{ url_for('registration') }}" method="post">
+                <div class="form-group">
+                    <label for="regUserName">Username</label>
+                    <input type="text" class="form-control" id="regUserName" aria-describedby="usernameHelp"
+                           placeholder="Enter username" name="regUserName">
+                </div>
+                <div class="form-group">
+                    <label for="regPass">Password</label>
+                    <input type="password" class="form-control" id="regPass" placeholder="Password" name="regPass">
+                </div>
+                <div class="form-group">
+                    <label for="regPassRep">Password repeat</label>
+                    <input type="password" class="form-control" id="regPassRep" placeholder="Enter password again" name="regPassRep">
+                </div>
+                <button id="submit" type="submit" class="btn btn-primary">Create New User</button>
+                <div id="message"></div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

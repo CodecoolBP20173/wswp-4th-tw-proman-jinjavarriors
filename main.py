@@ -61,6 +61,22 @@ def get_cards():
     return jsonify(cards)
 
 
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    if request.method == 'POST':
+        username = request.form["regUserName"]
+        password = request.form["regPass"]
+        isUser = queries.check_username(username)
+        if isUser:
+            return redirect(url_for("registration"))
+        else:
+            hashed_password = password.hash_password(password)
+            queries.create_user(username, hashed_password)
+            return redirect(url_for("login"))
+    else:
+        return render_template("registration.html")
+
+
 @app.route("/get-userid", methods=['GET'])
 def send_userid():
     return session["userId"]

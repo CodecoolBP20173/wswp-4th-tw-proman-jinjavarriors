@@ -43,7 +43,7 @@ body {
     font-size: 32pt;
 }
 
-.board-header, .board-details-header, .nav-link {
+.board-header, .board-details-header, .nav-link, .login-container, .signuphref {
     font-family: 'Questrial', sans-serif;
 }
 
@@ -81,4 +81,20 @@ span {
 
 #addBoard {
     font-family: 'Questrial', sans-serif !important;
+}
+
+.signuphref, .signuphref:hover, .signuphref:active, .signuphref:visited {
+    text-decoration: none !important;
+}
+
+.login-content {
+    float:none !important;
+    margin: 0 auto !important;
+}
+
+form {
+    width: 40%;
+    padding-top: 20%;
+    padding-bottom: auto;
+    margin: 0 auto;
 }

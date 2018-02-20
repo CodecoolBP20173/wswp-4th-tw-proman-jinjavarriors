@@ -15,6 +15,30 @@ def get_cards(board_id):
                                        {'board_id': board_id})
 
 
+def get_hashed_pass(user_name):
+    return data_manager.execute_select('''SELECT password FROM users
+                                        WHERE user_name = %(user_name)s;
+                                       ''',
+                                       {'user_name': user_name})
+
+def create_user(username, password):
+    return data_manager.execute_dml_statement("""
+    INSERT INTO users
+    (user_name,password)
+    VALUES(%(username)s,%(password)s)
+    RETURNING id;
+    """, {'username': username,
+          'password': password})
+
+
+def check_username(username):
+    return data_manager.execute_select("""
+    SELECT user_name
+    FROM users
+    WHERE user_name = %(username)s;
+    """, {'username': username})
+
+
 def get_userid_by_name(username):
     return data_manager.execute_dml_statement("""
                                             SELECT id FROM users
