@@ -207,12 +207,12 @@ dom = {
                 let _this = this;
                 setTimeout(function () {
                     let currentCard;
-                    if(card.dataset.id === _this.dataset.id){
+                    if (card.dataset.id === _this.dataset.id) {
                         currentCard = card;
                     }
                     let statusId = currentCard.parentNode.id;
                     let boardId = parseInt(currentCard.parentNode.parentNode.parentNode.previousSibling.id);
-                    for(let i=1;i<5;i++){
+                    for (let i = 1; i < 5; i++) {
                         setOrder(boardId, i);
                     }
                 }, 1000);
@@ -261,17 +261,60 @@ function setOrder(boardId, statusId) {
 
 }
 
-function compare(a, b) {
-  // Use toUpperCase() to ignore character casing
-  const genreA = a.order;
-  const genreB = b.order;
 
-  let comparison = 0;
-  if (genreA > genreB) {
-    comparison = 1;
-  } else if (genreA < genreB) {
-    comparison = -1;
-  }
-  return comparison;
+function compare(a, b) {
+    // Use toUpperCase() to ignore character casing
+    const genreA = a.order;
+    const genreB = b.order;
+
+    let comparison = 0;
+    if (genreA > genreB) {
+        comparison = 1;
+    } else if (genreA < genreB) {
+        comparison = -1;
+    }
+    return comparison;
 }
 
+
+function checkRegistrationForm() {
+    let usr = $('#regUserName');
+    let pwd = $('#regPass');
+    let pwdCheck = $('#regPassRep');
+    let msg = $('#message');
+    let submitBtn = $('#submit');
+
+    pwd.attr('disabled', 'disabled');
+    pwdCheck.attr('disabled', 'disabled');
+    submitBtn.attr('disabled', 'disabled');
+
+    let checkUsername = function () {
+        if (usr.val().length < 6) {
+            msg.css('color', 'red');
+            msg.html('Username shorter than 6 characters.');
+            pwd.attr('disabled', 'disabled');
+            pwdCheck.attr('disabled', 'disabled');
+            submitBtn.attr('disabled', 'disabled');
+        } else {
+            pwd.removeAttr('disabled');
+            pwdCheck.removeAttr('disabled');
+            msg.html('');
+        }
+    };
+
+    let checkPassword = function () {
+        if (pwd.val() === pwdCheck.val() && pwd.val().length >= 6) {
+            msg.css('color', 'green');
+            msg.html('Passwords are matching.');
+            submitBtn.removeAttr('disabled');
+        } else {
+            msg.css('color', 'red');
+            msg.html('Passwords are either not matching or shorter than 8 characters.');
+            submitBtn.attr('disabled', 'disabled');
+        }
+    };
+
+    usr.keyup(checkUsername);
+    pwd.keyup(checkPassword);
+    pwdCheck.keyup(checkPassword);
+}
