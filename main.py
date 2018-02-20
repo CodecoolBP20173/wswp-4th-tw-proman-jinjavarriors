@@ -10,7 +10,7 @@ def index():
         user_name = request.form['logUserName']
         user_password = request.form['logPass']
         hashed_pass = queries.get_hashed_pass(user_name)
-        check_login = password.verify_password(password, hashed_pass)
+        check_login = password.verify_password(user_password, hashed_pass)
         if check_login == True:
             return render_template('boards.html')
         else:
