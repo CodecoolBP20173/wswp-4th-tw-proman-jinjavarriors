@@ -18,7 +18,7 @@ def index():
     return render_template('login.html')
 
 
-@app.route('/registration')
+@app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'POST':
         username = request.form["regUserName"]
