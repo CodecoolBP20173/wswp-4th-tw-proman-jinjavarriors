@@ -6,11 +6,11 @@
                 <div class="form-group">
                     <label for="logUserName">Username</label>
                     <input type="text" class="form-control" id="logUserName" aria-describedby="emailHelp"
-                           placeholder="Enter username">
+                           placeholder="Enter username" name="logUserName">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    <label for="logPass">Password</label>
+                    <input type="password" class="form-control" id="logPass" placeholder="Password" name="logPass">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 <p>Don't have ProMan account? <a href="{{ url_for('registration') }}">Sign up now!</a></p>
