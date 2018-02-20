@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request
 import password
 
 app = Flask(__name__)
@@ -27,8 +27,7 @@ def registration():
         if isUser:
             return redirect(url_for("registration"))
         else:
-            hashed_bytes = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            hashed_password = hashed_bytes.decode('utf-8')
+            hashed_password = password.hash_password(password)
             queries.create_user(username, hashed_password)
             return redirect(url_for("login"))
     else:
