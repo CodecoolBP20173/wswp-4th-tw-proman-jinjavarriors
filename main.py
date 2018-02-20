@@ -20,7 +20,19 @@ def index():
 
 @app.route('/registration')
 def registration():
-    pass
+    if request.method == 'POST':
+        username = request.form["regusername"]
+        password = request.form["regpassword"]
+        isUser = queries.check_username(username)
+        if isUser:
+            return redirect(url_for("registration"))
+        else:
+            hashed_bytes = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+            hashed_password = hashed_bytes.decode('utf-8')
+            queries.create_user(username, hashed_password)
+            return redirect(url_for("login"))
+    else:
+        return render_template("registration.html")
 
 
 def main():
