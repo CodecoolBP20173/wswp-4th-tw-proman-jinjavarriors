@@ -1,3 +1,84 @@
-#boards {
-    background-color: green;
+html {
+    height: 100%;
+}
+
+body {
+    font-size: 24pt !important;
+    font-family: "Reenie Beanie", arial, sans-serif !important;
+}
+
+.arrow {
+    position: absolute;
+    right: 14px;
+}
+
+.addCard {
+    position: absolute;
+    right: 56px;
+}
+
+.padding {
+    padding-left: 10% !important;
+    padding-right: 10% !important;
+}
+
+.card {
+    border-radius: 1px !important;
+    box-shadow: 2px 5px 5px gray;
+    padding: 0 15px 0 15px;
+    margin-bottom: 5px;
+    height: 15rem;
+}
+
+.nav-link {
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.board-container {
+    margin-top: 50px;
+}
+
+.board-header {
+    font-size: 32pt;
+}
+
+.board-header, .board-details-header, .nav-link {
+    font-family: 'Questrial', sans-serif;
+}
+
+.board-details-header {
+    font-size: 20pt;
+}
+
+#newCardBtn, #saveBtn {
+    font-weight: bold !important;
+}
+
+.board-details-container {
+    border-top: 1px solid #242424;
+    padding: 10px 0 10px 0;
+}
+
+.board-content {
+    background-color: #d0cbcb;
+    border-radius: 5px;
+}
+
+body {
+    background-color: #f0f0f0 !important;
+}
+
+span {
+    font-family: "Reenie Beanie", arial, sans-serif !important;
+    font-size: 24pt !important;
+}
+
+#exampleModalCenter, #newcard {
+    font-family: 'Questrial', sans-serif !important;
+    font-size: 0.5em !important;
+}
+
+#addBoard {
+    font-family: 'Questrial', sans-serif !important;
 }
