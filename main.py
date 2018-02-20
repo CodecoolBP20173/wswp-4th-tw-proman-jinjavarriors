@@ -12,14 +12,15 @@ def boards():
 
 @app.route("/get-boards", methods=['POST'])
 def get_boards():
-    boards = queries.get_boards()
+    user_id = request.form['userId']
+    boards = queries.get_boards(user_id)
     return jsonify(boards)
 
 
 @app.route("/get-cards", methods=['POST'])
 def get_cards():
-    boardid = request.form['boardid']
-    cards = queries.get_cards(boardid)
+    board_id = request.form['boardId']
+    cards = queries.get_cards(board_id)
     return jsonify(cards)
 
 
