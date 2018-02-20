@@ -21,8 +21,8 @@ def boards():
 @app.route('/registration')
 def registration():
     if request.method == 'POST':
-        username = request.form["regusername"]
-        password = request.form["regpassword"]
+        username = request.form["regUserName"]
+        password = request.form["regPass"]
         isUser = queries.check_username(username)
         if isUser:
             return redirect(url_for("registration"))
