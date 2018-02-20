@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, request
 import password
 
 app = Flask(__name__)
@@ -18,17 +18,16 @@ def index():
     return render_template('login.html')
 
 
-@app.route('/registration')
+@app.route('/registration', methods=['GET', 'POST'])
 def registration():
     if request.method == 'POST':
-        username = request.form["regusername"]
-        password = request.form["regpassword"]
+        username = request.form["regUserName"]
+        password = request.form["regPass"]
         isUser = queries.check_username(username)
         if isUser:
             return redirect(url_for("registration"))
         else:
-            hashed_bytes = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-            hashed_password = hashed_bytes.decode('utf-8')
+            hashed_password = password.hash_password(password)
             queries.create_user(username, hashed_password)
             return redirect(url_for("login"))
     else:
