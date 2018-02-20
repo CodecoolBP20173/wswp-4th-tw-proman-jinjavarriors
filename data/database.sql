@@ -3,8 +3,8 @@ CREATE TABLE boards (
     title   VARCHAR(200)   NOT NULL,
     is_active     BOOLEAN   NOT NULL,
     user_id     INTEGER     NOT NULL,
-    creation_time  TIMESTAMP DEFAULT current_timestamp AT TIME ZONE 'CET',
-    modified_time  TIMESTAMP DEFAULT current_timestamp AT TIME ZONE 'CET'
+    creation_time  TIMESTAMP DEFAULT (current_timestamp AT TIME ZONE 'CET'),
+    modified_time  TIMESTAMP DEFAULT (current_timestamp AT TIME ZONE 'CET')
 );
 
 
@@ -15,8 +15,8 @@ CREATE TABLE cards (
     status_id   INTEGER     NOT NULL,
     "order"   INTEGER     NOT NULL,
     user_id     INTEGER     NOT NULL,
-    creation_time   TIMESTAMP DEFAULT current_timestamp AT TIME ZONE 'CET',
-    modified_time   TIMESTAMP DEFAULT current_timestamp AT TIME ZONE 'CET'
+    creation_time   TIMESTAMP DEFAULT (current_timestamp AT TIME ZONE 'CET'),
+    modified_time   TIMESTAMP DEFAULT (current_timestamp AT TIME ZONE 'CET')
 );
 
 
