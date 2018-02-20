@@ -21,8 +21,17 @@ dataHandler = {
     },
     getBoards: function (callback) {
         // the boards are retrieved and then the callback function is called with the boards
-        var boards = this._data.boards;
-        callback(boards);
+        let userId = sessionStorage.getItem('user_id');
+        $.ajax('/get-boards', {
+            method: 'POST',
+            data: {
+                userId: userId
+            },
+            success:function (boards) {
+                callback(boards)
+            }
+        })
+
 
     },
     getBoard: function (boardId, callback) {
@@ -54,6 +63,17 @@ dataHandler = {
             }
         }
         callback(cards, boardId);
+    },
+    getCards: function (boardId) {
+        $.ajax("get-cards", {
+            method: 'POST',
+            data: {
+                boardId: boardId
+            },
+            success:function (cards) {
+                callback(cards)
+            }
+        })
     },
     getCard: function (cardId) {
         // the card is retrieved and then the callback function is called with the card
