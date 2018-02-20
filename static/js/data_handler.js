@@ -85,14 +85,24 @@ dataHandler = {
     },
     createNewBoard: function (boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
-        var newId = this.getNewId('board');
-        this._data.boards.push({
-            'id': newId,
-            'title': boardTitle,
-            'is_active': true
-        });
-        this._saveData();
-        callback();
+        $.ajax('/create-new-board', {
+            method: 'POST',
+            data: {
+                boardTitle: boardTitle
+            },
+            success: function () {
+                console.log('success')
+            }
+        })
+
+        // var newId = this.getNewId('board');
+        // this._data.boards.push({
+        //     'id': newId,
+        //     'title': boardTitle,
+        //     'is_active': true
+        // });
+        // this._saveData();
+        // callback();
     },
     createNewCard: function (cardTitle, boardId, statusId, orderId, callback) {
         var newId = this.getNewId('card');
