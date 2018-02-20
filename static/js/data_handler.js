@@ -3,6 +3,12 @@
 
 // (watch out: when you would like to use a property/function of an object from the
 // object itself then you must use the 'this' keyword before. For example: 'this._data' below)
+
+// this object contains the functions which handle the data and its reading/writing
+// feel free to extend and change to fit your needs
+
+// (watch out: when you would like to use a property/function of an object from the
+// object itself then you must use the 'this' keyword before. For example: 'this._data' below)
 dataHandler = {
     keyInLocalStorage: 'proman-data', // the string that you use as a key in localStorage to save your application data
     _data: {}, // it contains the boards and their cards and statuses. It is not called from outside.
@@ -21,9 +27,12 @@ dataHandler = {
     },
     getBoards: function (callback) {
         // the boards are retrieved and then the callback function is called with the boards
-        var boards = this._data.boards;
-        callback(boards);
-
+        $.ajax('/get-boards', {
+            method: 'POST',
+            success: function (boards) {
+                callback(boards)
+            }
+        })
     },
     getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
@@ -35,7 +44,6 @@ dataHandler = {
             }
         }
     },
-
     getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
         callback(this._data.statuses)
@@ -55,6 +63,17 @@ dataHandler = {
         }
         callback(cards, boardId);
     },
+    getCards: function (boardId, board, callback) {
+        $.ajax("get-cards", {
+            method: 'POST',
+            data: {
+                boardId: boardId
+            },
+            success: function (cards) {
+                return callback(cards, board)
+            }
+        })
+    },
     getCard: function (cardId) {
         // the card is retrieved and then the callback function is called with the card
         let cards = this._data.cards;
@@ -66,15 +85,15 @@ dataHandler = {
     },
     createNewBoard: function (boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
-        var newId = this.getNewId('board');
-        this._data.boards.push({
-            'id': newId,
-            'title': boardTitle,
-            'is_active': true
-        });
-        this._saveData();
-        callback();
-
+        $.ajax('/create-new-board', {
+            method: 'POST',
+            data: {
+                boardTitle: boardTitle
+            },
+            success: function () {
+                console.log('success')
+            }
+        })
     },
     createNewCard: function (cardTitle, boardId, statusId, orderId, callback) {
         var newId = this.getNewId('card');
@@ -124,7 +143,6 @@ dataHandler = {
             return true;
         }
     },
-
     saveBoardStatus: function (board) {
         board.is_active = !board.is_active;
         dataHandler._saveData();
@@ -182,7 +200,5 @@ dataHandler = {
             card.order = newOrder[cardId];
         }
         this._saveData();
-
     }
 };
-

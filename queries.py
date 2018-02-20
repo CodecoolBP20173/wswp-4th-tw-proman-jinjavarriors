@@ -37,3 +37,23 @@ def check_username(username):
     FROM users
     WHERE user_name = %(username)s;
     """, {'username': username})
+
+
+def get_userid_by_name(username):
+    return data_manager.execute_dml_statement("""
+                                            SELECT id FROM users
+                                            WHERE user_name = %(user_name)s;
+                                            """,
+                                              {'user_name': username})
+
+
+def create_board(board_title, user_id):
+    return data_manager.execute_select("""
+                                        INSERT INTO boards (title, is_active, user_id, creation_time, modified_time)
+                                        VALUES (%(board_title)s, 'false', %(user_id)s, now(), now())
+                                        RETURNING id
+                                        """,
+                                       {
+                                           'board_title': board_title,
+                                           'user_id': user_id
+                                       })
