@@ -6,7 +6,7 @@ CREATE TABLE boards (
     creation_time  TIMESTAMP DEFAULT (current_timestamp AT TIME ZONE 'CET'),
     modified_time  TIMESTAMP DEFAULT (current_timestamp AT TIME ZONE 'CET')
 );
-
+0
 
 CREATE TABLE cards (
     id   SERIAL UNIQUE PRIMARY KEY  NOT NULL,
