@@ -3,12 +3,11 @@ dom = {
     init: function () {
         let container = $('.container');
         if (container.hasClass('main')) {
-            dom.createNewBoard();
             $.ajaxSetup({
                 async: false
             });
+            dom.createNewBoard();
             dom.loadBoards();
-            dom.toggleEvent();
             $.ajaxSetup({
                 async: true
             });
@@ -30,7 +29,6 @@ dom = {
         } else {
             dataHandler.getBoard(boardId, dom.showBoards);
         }
-
         // retrieves boards and makes showBoards called
     },
     showBoards: function (boards) {
@@ -49,10 +47,6 @@ dom = {
     showCards: function (cards, boardId) {
         // shows the cards of a board
         // it adds necessary event listeners also
-
-
-
-
 
 
         // let board = document.getElementById('board' + boardId);
@@ -181,7 +175,7 @@ dom = {
             }
         });
         dom.appendTableContent(statusContents, board);
-        dom.createNewCard()
+        dom.createNewCard();
     },
     appendTableContent: function (cards, board) {
         let table = $("#mainBoard");
@@ -220,10 +214,14 @@ dom = {
                  </div>
                 `;
         table.append(tableContent);
+
+        dom.toggleEvent();
     },
     toggleEvent: function () {
         let toggleBtns = $(".arrow");
+        debugger;
         for (let btn of toggleBtns) {
+            $(btn).off("click");
             $(btn).on("click", function () {
                 let btnBoardId = this.dataset.boardid;
                 let boards = $(".row");
@@ -233,9 +231,9 @@ dom = {
                             $(board).removeClass("hidden");
                             $(this).find("i").removeClass("fa fa-angle-up");
                             $(this).find("i").addClass("fa fa-angle-down");
-                            $.ajax("/save-boardStatus",{
-                                method:'POST',
-                                data:{
+                            $.ajax("/save-boardStatus", {
+                                method: 'POST',
+                                data: {
                                     boardId: btnBoardId,
                                     is_active: true
                                 }
@@ -244,9 +242,9 @@ dom = {
                             $(board).addClass("hidden");
                             $(this).find("i").removeClass("fa fa-angle-down");
                             $(this).find("i").addClass("fa fa-angle-up");
-                            $.ajax("/save-boardStatus",{
-                                method:'POST',
-                                data:{
+                            $.ajax("/save-boardStatus", {
+                                method: 'POST',
+                                data: {
                                     boardId: btnBoardId,
                                     is_active: false
                                 }
@@ -256,6 +254,41 @@ dom = {
                 }
             })
         }
+    },
+    toggleEventNewBoard: function () {
+        let newBtn = document.querySelectorAll(".arrow")[-1];
+        debugger;
+        $(newBtn).on("click", function () {
+            let btnBoardId = this.dataset.boardid;
+            let boards = $(".row");
+            for (let board of boards) {
+                if (board.dataset.boardid == btnBoardId) {
+                    if (board.classList.contains("hidden")) {
+                        $(board).removeClass("hidden");
+                        $(this).find("i").removeClass("fa fa-angle-up");
+                        $(this).find("i").addClass("fa fa-angle-down");
+                        $.ajax("/save-boardStatus", {
+                            method: 'POST',
+                            data: {
+                                boardId: btnBoardId,
+                                is_active: true
+                            }
+                        })
+                    } else {
+                        $(board).addClass("hidden");
+                        $(this).find("i").removeClass("fa fa-angle-down");
+                        $(this).find("i").addClass("fa fa-angle-up");
+                        $.ajax("/save-boardStatus", {
+                            method: 'POST',
+                            data: {
+                                boardId: btnBoardId,
+                                is_active: false
+                            }
+                        })
+                    }
+                }
+            }
+        })
     }
 };
 
