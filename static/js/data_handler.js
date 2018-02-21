@@ -3,12 +3,6 @@
 
 // (watch out: when you would like to use a property/function of an object from the
 // object itself then you must use the 'this' keyword before. For example: 'this._data' below)
-
-// this object contains the functions which handle the data and its reading/writing
-// feel free to extend and change to fit your needs
-
-// (watch out: when you would like to use a property/function of an object from the
-// object itself then you must use the 'this' keyword before. For example: 'this._data' below)
 dataHandler = {
     keyInLocalStorage: 'proman-data', // the string that you use as a key in localStorage to save your application data
     _data: {}, // it contains the boards and their cards and statuses. It is not called from outside.
@@ -30,19 +24,21 @@ dataHandler = {
         $.ajax('/get-boards', {
             method: 'POST',
             success: function (boards) {
-                callback(boards)
+                callback(boards);
             }
         })
     },
     getBoard: function (boardId, callback) {
         // the board is retrieved and then the callback function is called with the board
-        var boards = this._data.boards;
-        for (let i = 0; i < boards.length; i++) {
-            let board = boards[i];
-            if (board.id === boardId) {
-                callback(board)
+        $.ajax('/get_new_board', {
+            method: 'POST',
+            data: {
+                board_id: boardId
+            },
+            success: function (boards) {
+                callback(boards);
             }
-        }
+        })
     },
     getStatuses: function (callback) {
         // the statuses are retrieved and then the callback function is called with the statuses
@@ -90,8 +86,8 @@ dataHandler = {
             data: {
                 boardTitle: boardTitle
             },
-            success: function () {
-                console.log('success')
+            success: function (new_board_id) {
+                callback(isFirstLoad = false, new_board_id);
             }
         })
     },

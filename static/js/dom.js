@@ -13,15 +13,18 @@ dom = {
         }
     }
     ,
-    isFirstLoad: true,
-    loadBoards:
-
-        function () {
-            dataHandler.init();
-            dataHandler.getBoards(dom.showBoards);
-            // retrieves boards and makes showBoards called
-        }
+    isFirstLoad: true
     ,
+    loadBoards: function (isFirstLoad = true, boardId) {
+        dataHandler.init();
+        if (isFirstLoad) {
+            dataHandler.getBoards(dom.showBoards);
+        } else {
+            dataHandler.getBoard(boardId, dom.showBoards);
+        }
+
+        // retrieves boards and makes showBoards called
+    },
     showBoards: function (boards) {
         let table = $(".board-main");
         $.each(boards, function (i, board) {
