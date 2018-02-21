@@ -6,11 +6,11 @@
                 <div class="form-group">
                     <label for="logUserName">Username</label>
                     <input type="text" class="form-control" id="logUserName" aria-describedby="emailHelp"
-                           placeholder="Enter username" name="logUserName">
+                           placeholder="Enter username" name="logUserName" required>
                 </div>
                 <div class="form-group">
                     <label for="logPass">Password</label>
-                    <input type="password" class="form-control" id="logPass" placeholder="Password" name="logPass">
+                    <input type="password" class="form-control" id="logPass" placeholder="Password" name="logPass" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
                 {% if wrongpass is defined %}

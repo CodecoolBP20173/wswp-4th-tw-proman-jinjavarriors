@@ -90,7 +90,7 @@ span {
 }
 
 .login-content {
-    float:none !important;
+    float: none !important;
     margin: 0 auto !important;
 }
 
@@ -99,4 +99,10 @@ form {
     padding-top: 20%;
     padding-bottom: auto;
     margin: 0 auto;
+}
+
+#logoutBtn a {
+    color: white !important;
+    text-decoration: none !important;
+    font-family: 'Questrial', sans-serif !important;
 }
