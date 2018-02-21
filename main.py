@@ -26,19 +26,20 @@ def index():
 
 
 @app.route('/registration', methods=['GET', 'POST'])
-def registration():
+def registration(message=''):
     if request.method == 'POST':
         username = request.form["regUserName"]
         usr_password = request.form["regPass"]
         isUser = queries.check_username(username)
         if isUser:
-            return redirect(url_for("registration"))
+            message = 'Username taken, please choose another.'
+            return render_template("registration.html", message=message)
         else:
             hashed_password = password.hash_password(usr_password)
             queries.create_user(username, hashed_password)
             return redirect(url_for("index"))
     else:
-        return render_template("registration.html")
+        return render_template("registration.html", message=message)
 
 
 @app.route("/get-boards", methods=['POST'])
