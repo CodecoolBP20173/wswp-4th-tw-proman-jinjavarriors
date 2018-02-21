@@ -2,7 +2,7 @@
 {% block content %}
     <div class="registration-container container">
         <div class="registration-content">
-            <form action="{{ url_for('registration') }}" method="post">
+            <form action="{{ url_for('registration') }}" method="post" data-message="{{ message }}">
                 <div class="form-group">
                     <label for="regUserName">Username</label>
                     <input type="text" class="form-control" id="regUserName" aria-describedby="usernameHelp"

@@ -1,27 +1,40 @@
 // It uses data_handler.js to visualize elements
 dom = {
     init: function () {
-        dom.createNewBoard();
-        dom.loadBoards();
-        dom.createNewCard();
-        dom.dragAndDrop();
-    },
+        let container = $('.container');
+        if (container.hasClass('main')) {
+            dom.createNewBoard();
+            dom.loadBoards();
+            dom.createNewCard();
+            dom.dragAndDrop();
+        }
+        if (container.hasClass('registration-container')) {
+            showRegistrationMessage();
+            checkRegistrationForm();
+        }
+    }
+    ,
     isFirstLoad: true,
-    loadBoards: function () {
-        dataHandler.init();
-        dataHandler.getBoards(dom.showBoards);
-        // retrieves boards and makes showBoards called
-    },
+    loadBoards:
+
+        function () {
+            dataHandler.init();
+            dataHandler.getBoards(dom.showBoards);
+            // retrieves boards and makes showBoards called
+        }
+    ,
     showBoards: function (boards) {
         let table = $(".board-main");
         $.each(boards, function (i, board) {
             dataHandler.getCards(board['id'], board, dom.generateBoard);
         })
-    },
+    }
+    ,
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, dom.showCards);
-    },
+    }
+    ,
     showCards: function (cards, boardId) {
         // shows the cards of a board
         // it adds necessary event listeners also
@@ -57,7 +70,8 @@ dom = {
             var random_color = colors[Math.floor(Math.random() * colors.length)];
             cardsDom[i].style.backgroundColor = random_color;
         }
-    },
+    }
+    ,
     // here comes more features
     createNewBoard: function () {
         var saveButton = document.getElementById('saveBtn');
@@ -67,7 +81,8 @@ dom = {
             dataHandler.createNewBoard(boardTitle, dom.loadBoards)
             inputElement.value = "";
         });
-    },
+    }
+    ,
     createNewCard: function () {
         var addCardArray = document.getElementsByClassName("addCard");
         var boardId;
@@ -110,7 +125,8 @@ dom = {
                 }, 200);
             })
         }
-    },
+    }
+    ,
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
         let containers = Array.prototype.slice.call(boardDetailsContainers);
@@ -123,7 +139,8 @@ dom = {
             newStatus = parseInt(newStatus.charAt(8));
             dataHandler.editCard(boardId, cardId, newStatus);
         })
-    },
+    }
+    ,
     generateBoard: function (cards, board) {
         var statusContents = {
             new: "",
@@ -148,7 +165,8 @@ dom = {
             }
         });
         dom.appendTableContent(statusContents, board);
-    },
+    }
+    ,
     appendTableContent: function (cards, board) {
         let table = $(".board-main");
         let statuses = ["New", "In progress", "Testing", "Done"];
@@ -203,7 +221,6 @@ function setOrder(boardId, statusId) {
     dataHandler.saveOrders(newOrder);
 }
 
-
 function compare(a, b) {
     // Use toUpperCase() to ignore character casing
     const genreA = a.order;
@@ -217,7 +234,6 @@ function compare(a, b) {
     }
     return comparison;
 }
-
 
 function checkRegistrationForm() {
     let usr = $('#regUserName');
@@ -259,4 +275,11 @@ function checkRegistrationForm() {
     usr.keyup(checkUsername);
     pwd.keyup(checkPassword);
     pwdCheck.keyup(checkPassword);
+}
+
+function showRegistrationMessage() {
+    let msg = $('form').data('message');
+    if (msg !== '') {
+        alert(msg);
+    }
 }
