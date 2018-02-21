@@ -66,6 +66,15 @@ def create_new_board():
     return redirect('/')
 
 
+@app.route('/create-new-card', methods=['POST'])
+def create_new_card():
+    user_id = queries.get_userid_by_name(session['user_name'])
+    card_title = request.form['cardTitle']
+    board_id = request.form['boardId']
+    queries.create_new_card(card_title, board_id, user_id)
+    return 'Success'
+
+
 def main():
     app.run(debug=True)
 
