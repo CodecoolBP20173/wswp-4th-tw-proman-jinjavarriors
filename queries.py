@@ -58,3 +58,12 @@ def create_board(board_title, user_id):
                                            'board_title': board_title,
                                            'user_id': user_id
                                        })
+
+
+def save_board_status(boardId, is_active):
+    return data_manager.execute_select("""
+    UPDATE boards
+    SET is_active = %(is_active)s
+    WHERE boards.id = %(boardId)s
+    """, {'is_active': is_active,
+          'boardId': boardId})
