@@ -7,9 +7,14 @@ dom = {
         dom.dragAndDrop();
     },
     isFirstLoad: true,
-    loadBoards: function () {
+    loadBoards: function (isFirstLoad = true, boardId) {
         dataHandler.init();
-        dataHandler.getBoards(dom.showBoards);
+        if (isFirstLoad) {
+            dataHandler.getBoards(dom.showBoards);
+        } else {
+            dataHandler.getBoard(boardId, dom.showBoards);
+        }
+
         // retrieves boards and makes showBoards called
     },
     showBoards: function (boards) {
@@ -64,7 +69,7 @@ dom = {
         saveButton.addEventListener('click', function () {
             var inputElement = document.getElementById('newBoardName');
             var boardTitle = inputElement.value;
-            dataHandler.createNewBoard(boardTitle, dom.loadBoards)
+            dataHandler.createNewBoard(boardTitle, dom.loadBoards);
             inputElement.value = "";
         });
     },
