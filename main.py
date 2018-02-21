@@ -8,6 +8,8 @@ app.secret_key = 'secret'
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+    if 'user_name' in session:
+        return render_template('boards.html')
     if request.method == 'POST':
         user_name = request.form['logUserName']
         user_password = request.form['logPass']
@@ -46,6 +48,13 @@ def get_boards():
     return jsonify(boards)
 
 
+@app.route("/get_new_board", methods=['POST'])
+def get_new_board():
+    board_id = request.form['board_id']
+    board = queries.get_board(session["userId"], board_id)
+    return jsonify(board)
+
+
 @app.route("/get-cards", methods=['POST'])
 def get_cards():
     board_id = str(request.form['boardId'])
@@ -62,8 +71,8 @@ def send_userid():
 def create_new_board():
     board_name = request.form['boardTitle']
     user_id = queries.get_userid_by_name(session['user_name'])
-    queries.create_board(board_name, user_id)
-    return redirect('/')
+    new_table_id = queries.create_board(board_name, user_id)
+    return jsonify(new_table_id[0])
 
 
 def main():
