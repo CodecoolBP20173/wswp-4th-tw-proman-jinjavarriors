@@ -96,19 +96,16 @@ dataHandler = {
         })
     },
     createNewCard: function (cardTitle, boardId, statusId, orderId, callback) {
-        var newId = this.getNewId('card');
-        this._data.cards.push({
-            'id': newId,
-            'title': cardTitle,
-            'board_id': boardId,
-            'status_id': statusId,
-            'order_id': orderId
+        $.ajax("create-new-card", {
+            method: 'POST',
+            data: {
+                cardTitle: cardTitle,
+                boardId: boardId,
+            },
+            success: function () {
+                return callback(boardId);
+            }
         });
-        this._saveData();
-        var cards = dataHandler.getCardsByBoardId(boardId, function () {
-
-        });
-        callback(cards, boardId);
     },
     // here comes more features
     getNewId: function (table) {
