@@ -18,10 +18,8 @@ dom = {
             showRegistrationMessage();
             checkRegistrationForm();
         }
-    }
-    ,
-    isFirstLoad: true
-    ,
+    },
+    isFirstLoad: true,
     loadBoards: function (isFirstLoad = true, boardId) {
         dataHandler.init();
         if (isFirstLoad) {
@@ -37,13 +35,11 @@ dom = {
             dataHandler.getCards(board['id'], board, dom.generateBoard);
         });
 
-    }
-    ,
+    },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, dom.showCards);
-    }
-    ,
+    },
     showCards: function (cards, boardId) {
         // shows the cards of a board
         // it adds necessary event listeners also
@@ -76,12 +72,12 @@ dom = {
         // statusColumns.statusId4.innerHTML = doneStatusArray.join('');
 
         let cardsDom = document.getElementsByClassName('card');
+
         for (let i = 0; i < cardsDom.length; i++) {
             var random_color = colors[Math.floor(Math.random() * colors.length)];
             cardsDom[i].style.backgroundColor = random_color;
         }
-    }
-    ,
+    },
     // here comes more features
     createNewBoard: function () {
         var saveButton = document.getElementById('saveBtn');
@@ -91,17 +87,16 @@ dom = {
             dataHandler.createNewBoard(boardTitle, dom.loadBoards);
             inputElement.value = "";
         });
-    }
-    ,
+    },
     createNewCard: function () {
         var addCardArray = document.getElementsByClassName("addCard");
         var boardId;
+
         for (let addCardBtn of addCardArray) {
             addCardBtn.addEventListener("click", function () {
                 boardId = parseInt(addCardBtn.parentElement.parentElement.dataset.boardid);
             });
         }
-
         var saveButton = document.getElementById('newCardBtn');
         saveButton.addEventListener("click", function () {
             let inputElement = document.getElementById("cardInput");
@@ -114,6 +109,7 @@ dom = {
             inputElement.value = "";
         });
         var cards = document.getElementsByClassName("card");
+
         for (let card of cards) {
             card.addEventListener("focusout", function () {
                 let cardId = parseInt(this.dataset.id);
@@ -129,14 +125,14 @@ dom = {
                     }
                     let statusId = currentCard.parentNode.id;
                     let boardId = parseInt(currentCard.parentNode.parentNode.parentNode.previousSibling.id);
+
                     for (let i = 1; i < 5; i++) {
                         setOrder(boardId, i);
                     }
                 }, 200);
             })
         }
-    }
-    ,
+    },
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
         let containers = Array.prototype.slice.call(boardDetailsContainers);
@@ -149,8 +145,7 @@ dom = {
             newStatus = parseInt(newStatus.charAt(8));
             dataHandler.editCard(boardId, cardId, newStatus);
         })
-    }
-    ,
+    },
     generateBoard: function (cards, board) {
         var statusContents = {
             new: "",
@@ -214,17 +209,17 @@ dom = {
                  </div>
                 `;
         table.append(tableContent);
-
         dom.toggleEvent();
     },
     toggleEvent: function () {
         let toggleBtns = $(".arrow");
-        debugger;
+
         for (let btn of toggleBtns) {
             $(btn).off("click");
             $(btn).on("click", function () {
                 let btnBoardId = this.dataset.boardid;
                 let boards = $(".row");
+
                 for (let board of boards) {
                     if (board.dataset.boardid == btnBoardId) {
                         if (board.classList.contains("hidden")) {
@@ -257,10 +252,10 @@ dom = {
     },
     toggleEventNewBoard: function () {
         let newBtn = document.querySelectorAll(".arrow")[-1];
-        debugger;
         $(newBtn).on("click", function () {
             let btnBoardId = this.dataset.boardid;
             let boards = $(".row");
+
             for (let board of boards) {
                 if (board.dataset.boardid == btnBoardId) {
                     if (board.classList.contains("hidden")) {
@@ -295,7 +290,6 @@ dom = {
 function appendToElement(elementToExtend, textToAppend) {
     let fakeDiv = document.createElement('div');
     fakeDiv.innerHTML = textToAppend;
-    debugger;
     elementToExtend.appendChild(fakeDiv.firstChild);
     return elementToExtend.lastChild;
 }
@@ -304,6 +298,7 @@ function setOrder(boardId, statusId) {
     cards = dataHandler.returnOnBoardCards(boardId);
     let newOrder = {};
     var counter = 1;
+
     for (let i = 0; i < cards.length; i++) {
         if (cards[i].status_id === statusId) {
             newOrder[cards[i].id] = counter;

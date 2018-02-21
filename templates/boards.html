@@ -1,48 +1,49 @@
 {% extends 'layout.html' %}
 {% block content %}
 
-{% include 'navbar.html' %}
-<div class="board-main padding container main"></div>
+    {% include 'navbar.html' %}
+    <div class="board-main padding container main" id="mainBoard"></div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Add new board</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <label for="newBoardName">Board name</label><br>
-                <input type="text" id="newBoardName" placeholder="Enter board name">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="saveBtn" type="button" class="btn btn-primary" data-dismiss="modal">Add board</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal -->
-<div id="newcard" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Create new card</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <label for="cardInput">Card title</label><br>
-                <input type="text" name="title" id="cardInput" placeholder="Enter card title">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="newCardBtn" data-dismiss="modal">Add card</button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Add new board</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label for="newBoardName">Board name</label><br>
+                    <input type="text" id="newBoardName" placeholder="Enter board name">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="saveBtn" type="button" class="btn btn-primary" data-dismiss="modal">Add board</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    <!-- Modal -->
+    <div id="newcard" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create new card</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <label for="cardInput">Card title</label><br>
+                    <input type="text" name="title" id="cardInput" placeholder="Enter card title">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="newCardBtn" data-dismiss="modal">Add card</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
