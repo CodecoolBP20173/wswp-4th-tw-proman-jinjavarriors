@@ -4,7 +4,15 @@ dom = {
         let container = $('.container');
         if (container.hasClass('main')) {
             dom.createNewBoard();
+            $.ajaxSetup({
+                async: false
+            });
             dom.loadBoards();
+            dom.toggleEvent();
+            $.ajaxSetup({
+                async: true
+            });
+            dom.createNewCard();
             dom.dragAndDrop();
         }
         if (container.hasClass('registration-container')) {
@@ -29,7 +37,8 @@ dom = {
         let table = $(".board-main");
         $.each(boards, function (i, board) {
             dataHandler.getCards(board['id'], board, dom.generateBoard);
-        })
+        });
+
     }
     ,
     loadCards: function (boardId) {
@@ -173,13 +182,18 @@ dom = {
         });
         dom.appendTableContent(statusContents, board);
         dom.createNewCard()
-    }
-    ,
+    },
     appendTableContent: function (cards, board) {
-        let table = $(".board-main");
+        let table = $("#mainBoard");
         let statuses = ["New", "In progress", "Testing", "Done"];
         let statusesKeys = ["new", "in_progress", "testing", "done"];
         let statusesContent = "";
+        let isHidden = "hidden";
+        let arrowIcon = "fa fa-angle-down";
+        if (board['is_active'] == true) {
+            isHidden = "";
+            arrowIcon = "fa fa-angle-up";
+        }
         $.each(statuses, function (i, status) {
             statusesContent +=
                 `<div class="board-details-container col-md-3 col-sm-6 col-12">
@@ -197,21 +211,58 @@ dom = {
                             Add Card <i data-boardId="${board['id']}" class="far fa-plus-square"></i>
                         </button>
                         <button class="btn btn-info arrow" data-boardId="${board['id']}">
-                            <i class="fas"></i>
+                            <i class="${arrowIcon}"></i>
                         </button>
                     </div>
-                    <div class="board-content row">
+                    <div class="board-content row ${isHidden}" data-boardId="${board['id']}">
                         ${statusesContent}
                     </div>
                  </div>
                 `;
         table.append(tableContent);
+    },
+    toggleEvent: function () {
+        let toggleBtns = $(".arrow");
+        for (let btn of toggleBtns) {
+            $(btn).on("click", function () {
+                let btnBoardId = this.dataset.boardid;
+                let boards = $(".row");
+                for (let board of boards) {
+                    if (board.dataset.boardid == btnBoardId) {
+                        if (board.classList.contains("hidden")) {
+                            $(board).removeClass("hidden");
+                            $(this).find("i").removeClass("fa fa-angle-up");
+                            $(this).find("i").addClass("fa fa-angle-down");
+                            $.ajax("/save-boardStatus",{
+                                method:'POST',
+                                data:{
+                                    boardId: btnBoardId,
+                                    is_active: true
+                                }
+                            })
+                        } else {
+                            $(board).addClass("hidden");
+                            $(this).find("i").removeClass("fa fa-angle-down");
+                            $(this).find("i").addClass("fa fa-angle-up");
+                            $.ajax("/save-boardStatus",{
+                                method:'POST',
+                                data:{
+                                    boardId: btnBoardId,
+                                    is_active: false
+                                }
+                            })
+                        }
+                    }
+                }
+            })
+        }
     }
 };
 
 function appendToElement(elementToExtend, textToAppend) {
     let fakeDiv = document.createElement('div');
     fakeDiv.innerHTML = textToAppend;
+    debugger;
     elementToExtend.appendChild(fakeDiv.firstChild);
     return elementToExtend.lastChild;
 }

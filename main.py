@@ -84,6 +84,13 @@ def create_new_card():
     return 'Success'
 
 
+@app.route('/save-boardStatus', methods=['POST'])
+def save_boardStatus():
+    boardId = request.form['boardId']
+    is_active = request.form['is_active']
+    queries.save_board_status(boardId, is_active)
+
+
 def main():
     app.run(debug=True)
 

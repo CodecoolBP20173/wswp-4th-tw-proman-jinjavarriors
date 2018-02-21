@@ -11,7 +11,9 @@ body {
     position: absolute;
     right: 14px;
 }
-
+.hidden{
+    display: none !important;
+}
 .addCard {
     position: absolute;
     right: 56px;
