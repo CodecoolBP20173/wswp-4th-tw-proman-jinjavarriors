@@ -1,13 +1,6 @@
 {% extends 'layout.html' %}
 {% block content %}
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('index') }}">ProMan</a>
-            </li>
-        </ul>
-        <button id="addBoard" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Add board <i class="far fa-clipboard"></i></button>
-    </nav>
+{% include 'navbar.html' %}
 <div class="board-main padding container main">
 
 </div>
