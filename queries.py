@@ -58,3 +58,26 @@ def create_board(board_title, user_id):
                                            'board_title': board_title,
                                            'user_id': user_id
                                        })
+
+
+def get_new_order(board_id):
+    return data_manager.execute_dml_statement("""
+                                        SELECT MAX("order") FROM cards
+                                        WHERE board_id = %(board_id)s AND status_id = 1;
+                                        """,
+                                              {'board_id': board_id})
+
+
+def create_new_card(title, board_id, user_id):
+    next_order = get_new_order(board_id) + 1
+    return data_manager.execute_select("""
+                                        INSERT INTO cards (title, board_id, status_id, "order", user_id)
+                                        VALUES (%(title)s, %(board_id)s, 1, %(next_order)s, %(user_id)s)
+                                        RETURNING id
+                                        """,
+                                       {
+                                           'title': title,
+                                           'board_id': board_id,
+                                           'next_order': next_order,
+                                           'user_id': user_id
+                                       })
