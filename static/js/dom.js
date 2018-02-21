@@ -21,15 +21,18 @@ dom = {
         }
     }
     ,
-    isFirstLoad: true,
-    loadBoards:
-
-        function () {
-            dataHandler.init();
-            dataHandler.getBoards(dom.showBoards);
-            // retrieves boards and makes showBoards called
-        }
+    isFirstLoad: true
     ,
+    loadBoards: function (isFirstLoad = true, boardId) {
+        dataHandler.init();
+        if (isFirstLoad) {
+            dataHandler.getBoards(dom.showBoards);
+        } else {
+            dataHandler.getBoard(boardId, dom.showBoards);
+        }
+
+        // retrieves boards and makes showBoards called
+    },
     showBoards: function (boards) {
         let table = $(".board-main");
         $.each(boards, function (i, board) {
@@ -46,32 +49,37 @@ dom = {
     showCards: function (cards, boardId) {
         // shows the cards of a board
         // it adds necessary event listeners also
-        let board = document.getElementById('board' + boardId);
 
-        var statusColumns = board.getElementsByClassName('board-details-content');
-        var newStatusArray = [];
-        var inProgressStatusArray = [];
-        var testingStatusArray = [];
-        var doneStatusArray = [];
-        var colors = ['#ff7eb9', '#7afcff', '#feff9c', '#cdf670'];
 
-        cards.sort(compare);
 
-        for (let i = 0; i < cards.length; i++) {
-            if (cards[i].status_id === 1) {
-                newStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-            } else if (cards[i].status_id === 2) {
-                inProgressStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-            } else if (cards[i].status_id === 3) {
-                testingStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-            } else if (cards[i].status_id === 4) {
-                doneStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-            }
-        }
-        statusColumns.statusId1.innerHTML = newStatusArray.join('');
-        statusColumns.statusId2.innerHTML = inProgressStatusArray.join('');
-        statusColumns.statusId3.innerHTML = testingStatusArray.join('');
-        statusColumns.statusId4.innerHTML = doneStatusArray.join('');
+
+
+
+        // let board = document.getElementById('board' + boardId);
+        // var statusColumns = board.getElementsByClassName('board-details-content');
+        // var newStatusArray = [];
+        // var inProgressStatusArray = [];
+        // var testingStatusArray = [];
+        // var doneStatusArray = [];
+        // var colors = ['#ff7eb9', '#7afcff', '#feff9c', '#cdf670'];
+        //
+        // cards.sort(compare);
+        //
+        // for (let i = 0; i < cards.length; i++) {
+        //     if (cards[i].status_id === 1) {
+        //         newStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
+        //     } else if (cards[i].status_id === 2) {
+        //         inProgressStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
+        //     } else if (cards[i].status_id === 3) {
+        //         testingStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
+        //     } else if (cards[i].status_id === 4) {
+        //         doneStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
+        //     }
+        // }
+        // statusColumns.statusId1.innerHTML = newStatusArray.join('');
+        // statusColumns.statusId2.innerHTML = inProgressStatusArray.join('');
+        // statusColumns.statusId3.innerHTML = testingStatusArray.join('');
+        // statusColumns.statusId4.innerHTML = doneStatusArray.join('');
 
         let cardsDom = document.getElementsByClassName('card');
         for (let i = 0; i < cardsDom.length; i++) {
@@ -86,7 +94,7 @@ dom = {
         saveButton.addEventListener('click', function () {
             var inputElement = document.getElementById('newBoardName');
             var boardTitle = inputElement.value;
-            dataHandler.createNewBoard(boardTitle, dom.loadBoards)
+            dataHandler.createNewBoard(boardTitle, dom.loadBoards);
             inputElement.value = "";
         });
     }
@@ -96,7 +104,7 @@ dom = {
         var boardId;
         for (let addCardBtn of addCardArray) {
             addCardBtn.addEventListener("click", function () {
-                boardId = parseInt(addCardBtn.parentElement.parentElement.id);
+                boardId = parseInt(addCardBtn.parentElement.parentElement.dataset.boardid);
             });
         }
 
@@ -108,7 +116,7 @@ dom = {
             var orderId = 1;
             dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, function () {
                 dom.loadCards(boardId)
-            })
+            });
             inputElement.value = "";
         });
         var cards = document.getElementsByClassName("card");
@@ -173,6 +181,7 @@ dom = {
             }
         });
         dom.appendTableContent(statusContents, board);
+        dom.createNewCard()
     },
     appendTableContent: function (cards, board) {
         let table = $("#mainBoard");
@@ -198,7 +207,7 @@ dom = {
             `<div class="board-container" data-boardId="${board['id']}">
                     <div class="board-header col-12">
                         ${board['title']}
-                        <button type="button" class="btn btn-success addCard" data-toggle="modal" data-target="#newCard">
+                        <button type="button" class="btn btn-success addCard" data-toggle="modal" data-target="#newcard">
                             Add Card <i data-boardId="${board['id']}" class="far fa-plus-square"></i>
                         </button>
                         <button class="btn btn-info arrow" data-boardId="${board['id']}">
