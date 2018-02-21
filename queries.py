@@ -21,6 +21,7 @@ def get_hashed_pass(user_name):
                                        ''',
                                        {'user_name': user_name})
 
+
 def create_user(username, password):
     return data_manager.execute_dml_statement("""
     INSERT INTO users

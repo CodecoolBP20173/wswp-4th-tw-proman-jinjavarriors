@@ -9,7 +9,8 @@ dom = {
             dom.dragAndDrop();
         }
         if (container.hasClass('registration-container')) {
-            checkRegistrationForm()
+            showRegistrationMessage();
+            checkRegistrationForm();
         }
     }
     ,
@@ -21,7 +22,6 @@ dom = {
             dataHandler.getBoards(dom.showBoards);
             // retrieves boards and makes showBoards called
         }
-
     ,
     showBoards: function (boards) {
         let table = $(".board-main");
@@ -221,7 +221,6 @@ function setOrder(boardId, statusId) {
     dataHandler.saveOrders(newOrder);
 }
 
-
 function compare(a, b) {
     // Use toUpperCase() to ignore character casing
     const genreA = a.order;
@@ -235,7 +234,6 @@ function compare(a, b) {
     }
     return comparison;
 }
-
 
 function checkRegistrationForm() {
     let usr = $('#regUserName');
@@ -277,4 +275,11 @@ function checkRegistrationForm() {
     usr.keyup(checkUsername);
     pwd.keyup(checkPassword);
     pwdCheck.keyup(checkPassword);
+}
+
+function showRegistrationMessage() {
+    let msg = $('form').data('message');
+    if (msg !== '') {
+        alert(msg);
+    }
 }
