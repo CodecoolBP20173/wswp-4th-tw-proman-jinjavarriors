@@ -139,10 +139,8 @@ dom = {
         let drake = dragula({containers: containers});
         drake.on('drop', function (el) {
             let cardId = parseInt(el.dataset.id);
-            let boardId = parseInt(el.parentNode.parentNode.parentNode.previousSibling.id);
-            let parent = el.parentNode;
-            let newStatus = parent.id;
-            newStatus = parseInt(newStatus.charAt(8));
+            let boardId = parseInt(el.parentNode.parentNode.parentNode.dataset.boardid);
+            let newStatus = parseInt(el.parentNode.parentNode.dataset.statusid);
             dataHandler.editCard(boardId, cardId, newStatus);
         })
     },
@@ -185,9 +183,9 @@ dom = {
         }
         $.each(statuses, function (i, status) {
             statusesContent +=
-                `<div class="board-details-container col-md-3 col-sm-6 col-12">
+                `<div class="board-details-container col-md-3 col-sm-6 col-12" data-statusid="${i + 1}">
                     <div>${status}</div>
-                    <div class="card-container">
+                    <div class="card-container dragCont">
                         ${cards[statusesKeys[i]]}
                     </div>
                  </div>`;

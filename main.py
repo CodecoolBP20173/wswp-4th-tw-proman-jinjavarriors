@@ -97,6 +97,14 @@ def save_boardStatus():
     queries.save_board_status(boardId, is_active)
 
 
+@app.route('/edit-card', methods=['POST'])
+def edit_card():
+    status_id = request.form['status_id']
+    card_id = request.form['card_id']
+    queries.edit_card(card_id, status_id)
+    return 'Success'
+
+
 def main():
     app.run(debug=True)
 

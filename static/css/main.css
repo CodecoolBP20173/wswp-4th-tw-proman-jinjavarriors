@@ -106,3 +106,7 @@ form {
     text-decoration: none !important;
     font-family: 'Questrial', sans-serif !important;
 }
+
+.card-container {
+    min-height: 100%;
+}

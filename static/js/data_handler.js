@@ -145,9 +145,13 @@ dataHandler = {
         if (card.board_id != boardId) {
             throw "You cannot move card to another board!";
         }
-        card.status_id = statusId;
-        card.board_id = boardId;
-        this._saveData();
+        $.ajax("edit-card", {
+            method: 'POST',
+            data: {
+                status_id: statusId,
+                card_id: cardId
+            }
+        });
     },
     returnCards: function (boardId) {
         let all_cards = this._data.cards;
