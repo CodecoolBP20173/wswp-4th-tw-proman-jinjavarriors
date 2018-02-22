@@ -103,9 +103,7 @@ dom = {
             var cardTitle = inputElement.value;
             var statusId = 1;
             var orderId = 1;
-            dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, function () {
-                dom.loadCards(boardId)
-            });
+            dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, dom.appendNewCard);
             inputElement.value = "";
         });
         var cards = document.getElementsByClassName("card");
@@ -132,6 +130,13 @@ dom = {
                 }, 200);
             })
         }
+    },
+    appendNewCard: function (boardId, cardId, orderId, cardTitle) {
+        debugger;
+        let cardContent = `<div class="card" data-id="${cardId}" data-order="${orderId}" 
+                          data-boardId="${boardId}">${cardTitle}</div>`;
+        let cardContainer = $(`.card-container[data-newBoardId=${boardId}]`);
+        cardContainer.append(cardContent);
     },
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
@@ -186,7 +191,7 @@ dom = {
             statusesContent +=
                 `<div class="board-details-container col-md-3 col-sm-6 col-12">
                     <div>${status}</div>
-                    <div class="card-container">
+                    <div class="card-container" data-${statusesKeys[i]}BoardId="${board['id']}"}>
                         ${cards[statusesKeys[i]]}
                     </div>
                  </div>`;

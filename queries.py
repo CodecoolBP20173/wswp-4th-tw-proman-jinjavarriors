@@ -92,10 +92,10 @@ def create_new_card(title, board_id, user_id):
         next_order = 1
     else:
         next_order += 1
-    return data_manager.execute_select("""
+    return data_manager.execute_dml_statement("""
                                         INSERT INTO cards (title, board_id, status_id, "order", user_id)
                                         VALUES (%(title)s, %(board_id)s, 1, %(next_order)s, %(user_id)s)
-                                        RETURNING id
+                                        RETURNING id,"order"
                                         """,
                                        {
                                            'title': title,
