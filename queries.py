@@ -60,7 +60,7 @@ def get_userid_by_name(username):
 def create_board(board_title, user_id):
     return data_manager.execute_dml_statement("""
                                         INSERT INTO boards (title, is_active, user_id, creation_time, modified_time)
-                                        VALUES (%(board_title)s, 'false', %(user_id)s, now(), now())
+                                        VALUES (%(board_title)s, false, %(user_id)s, now(), now())
                                         RETURNING id
                                         """,
                                               {
