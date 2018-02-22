@@ -112,6 +112,13 @@ def edit_card():
     return 'Success'
 
 
+@app.route('/get-card', methods=['POST'])
+def get_card():
+    card_id = request.form['card_id']
+    card = queries.get_card_by_id(card_id)
+    return jsonify(card)
+
+
 def main():
     app.run(debug=True)
 

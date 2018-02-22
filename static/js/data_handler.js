@@ -72,12 +72,13 @@ dataHandler = {
     },
     getCard: function (cardId) {
         // the card is retrieved and then the callback function is called with the card
-        let cards = this._data.cards;
-        for (let i = 0; i < cards.length; i++) {
-            if (cards[i].id === cardId) {
-                return cards[i];
-            }
-        }
+
+        // let cards = this._data.cards;
+        // for (let i = 0; i < cards.length; i++) {
+        //     if (cards[i].id === cardId) {
+        //         return cards[i];
+        //     }
+        // }
     },
     createNewBoard: function (boardTitle, callback) {
         // creates new board, saves it and calls the callback function with its data
@@ -99,7 +100,7 @@ dataHandler = {
                 boardId: boardId,
             },
             success: function (returnData) {
-                return callback(boardId,returnData[0],returnData[1],cardTitle);
+                return callback(boardId, returnData[0], returnData[1], cardTitle);
             }
         });
     },
@@ -141,28 +142,27 @@ dataHandler = {
         dataHandler._saveData();
     },
     editCard: function (boardId, cardId, statusId) {
-        card = dataHandler.getCard(cardId);
-        if (card.board_id != boardId) {
-            throw "You cannot move card to another board!";
-        }
-        $.ajax("edit-card", {
+        $.ajax('/get-card', {
             method: 'POST',
             data: {
-                status_id: statusId,
                 card_id: cardId
+            },
+            success: function (card) {
+                if (card[0]["board_id"] !== boardId) {
+                    throw "You cannot move card to another board!";
+                }
+                $.ajax("edit-card", {
+                    method: 'POST',
+                    data: {
+                        status_id: statusId,
+                        card_id: cardId
+                    }
+                });
             }
-        });
+        })
     },
-    returnCards: function (boardId) {
-        let all_cards = this._data.cards;
-        let cards = [];
-        for (let i = 0; i < all_cards.length; i++) {
-            let card = all_cards[i];
-            if (card.board_id === boardId) {
-                cards.push(card);
-            }
-        }
-        return cards;
+    loadCard: function (card) {
+
     },
     returnOnBoardCards: function (boardId) {
         let all_cards = document.getElementsByClassName("card");
