@@ -45,7 +45,7 @@ body {
     font-size: 32pt;
 }
 
-.board-header, .board-details-header, .nav-link, .login-container, .signuphref {
+.board-header, .board-details-header, .nav-link, .login-container, .signuphref, .registration-container {
     font-family: 'Questrial', sans-serif;
 }
 
