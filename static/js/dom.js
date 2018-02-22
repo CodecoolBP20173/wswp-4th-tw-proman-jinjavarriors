@@ -149,7 +149,7 @@ dom = {
         }
         $.each(statuses, function (i, status) {
             statusesContent +=
-                `<div class="board-details-container col-md-3 col-sm-6 col-12" data-statusid="${i + 1}">
+                `<div class="board-details-container col-lg-3 col-md-6 col-12" data-statusid="${i + 1}">
                     <div>${status}</div>
                     <div class="card-container dragCont" data-${statusesKeys[i]}BoardId="${board['id']}"}>
                         ${cards[statusesKeys[i]]}
