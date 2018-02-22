@@ -186,10 +186,14 @@ dataHandler = {
         }
         return cardsAndDetails;
     },
-    editTitle: function (cardId, newTitle) {
-        card = dataHandler.getCard(cardId);
-        card.title = newTitle;
-        this._saveData();
+    saveCardTitle: function (cardId, newTitle) {
+        $.ajax("save-card-title", {
+            method: 'POST',
+            data: {
+                cardTitle: newTitle,
+                cardId: cardId,
+            },
+        });
     },
     saveOrders: function (newOrder) {
         for (let cardId in newOrder) {

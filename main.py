@@ -126,6 +126,14 @@ def get_card():
     return jsonify(card)
 
 
+@app.route('/save-card-title', methods=['POST'])
+def save_card_title():
+    card_id = request.form['cardId']
+    new_title = request.form['cardTitle']
+    queries.save_card_title(card_id, new_title)
+    return 'Card title edited'
+
+
 def main():
     app.run(debug=True)
 

@@ -8,6 +8,7 @@ dom = {
             });
             dom.createNewBoard();
             dom.loadBoards();
+            dom.editCardTitle();
             $.ajaxSetup({
                 async: true
             });
@@ -93,14 +94,35 @@ dom = {
             })
         }
     },
+    editCardTitle: function () {
+        let penButtons = $('.fa-edit');
+        penButtons.on('click', {}, function (event) {
+            let cardId = $(this).closest($('.card')).data('id');
+            let currentCardTitle = $(this).closest('.editBtn').siblings('.cardTitle');
+            let currentCardTitleContent = currentCardTitle.text();
+            let inputField = `<input id="newCardTitle" type="text" name="newTitle" maxlength="44" value="${currentCardTitleContent}">`;
+            currentCardTitle.replaceWith(inputField);
+
+            let input = $('#newCardTitle');
+
+            input.on('focusout', function () {
+                let newTitle = $(input).val();
+                dataHandler.saveCardTitle(cardId, newTitle);
+                newTitleContent = `<div class="cardTitle">${newTitle}</div>`;
+                editedInputField = $('#newCardTitle');
+                editedInputField.replaceWith(newTitleContent);
+            })
+        })
+    },
     appendNewCard: function (boardId, cardId, orderId, cardTitle) {
         let cardContent = `
                             <div class="card container" data-id="${cardId}" data-order="${orderId}" data-boardId="${boardId}">
                                 <div class="editBtn"><a class="far fa-edit"></a></div>
-                                <div>${cardTitle}</div>
+                                <div class="cardTitle">${cardTitle}</div>
                             </div>`;
         let cardContainer = $(`.card-container[data-newBoardId=${boardId}]`);
         cardContainer.append(cardContent);
+        dom.editCardTitle();
     },
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
@@ -124,7 +146,7 @@ dom = {
             let cardContent = `
                         <div class="card" data-id="${card['id']}" data-order="${card['order']}" data-boardId="${card['board-id']}">
                             <div class="editBtn"><a class="far fa-edit"></a></div>
-                            ${card['title']}
+                            <div class="cardTitle">${card['title']}</div>
                         </div>`;
             if (card['status_id'] == 1) {
                 statusContents.new += cardContent;
@@ -222,41 +244,6 @@ dom = {
                 }
             })
         }
-    },
-    toggleEventNewBoard: function () {
-        let newBtn = document.querySelectorAll(".arrow")[-1];
-        $(newBtn).on("click", function () {
-            let btnBoardId = this.dataset.boardid;
-            let boards = $(".row");
-
-            for (let board of boards) {
-                if (board.dataset.boardid == btnBoardId) {
-                    if (board.classList.contains("hidden")) {
-                        $(board).removeClass("hidden");
-                        $(this).find("i").removeClass("fa fa-angle-up");
-                        $(this).find("i").addClass("fa fa-angle-down");
-                        $.ajax("/save-boardStatus", {
-                            method: 'POST',
-                            data: {
-                                boardId: btnBoardId,
-                                is_active: true
-                            }
-                        })
-                    } else {
-                        $(board).addClass("hidden");
-                        $(this).find("i").removeClass("fa fa-angle-down");
-                        $(this).find("i").addClass("fa fa-angle-up");
-                        $.ajax("/save-boardStatus", {
-                            method: 'POST',
-                            data: {
-                                boardId: btnBoardId,
-                                is_active: false
-                            }
-                        })
-                    }
-                }
-            }
-        })
     }
 };
 

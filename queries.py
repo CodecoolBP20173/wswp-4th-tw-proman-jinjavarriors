@@ -123,3 +123,15 @@ def get_card_by_id(card_id):
                                         WHERE id = %(card_id)s
                                         """,
                                        {'card_id': card_id})
+
+
+def save_card_title(card_id, title):
+    return data_manager.execute_dml_statement("""
+                                        UPDATE cards SET title = %(title)s
+                                        WHERE id = %(card_id)s
+                                        RETURNING id;
+                                        """,
+                                              {
+                                                  'card_id': card_id,
+                                                  'title': title
+                                              })
