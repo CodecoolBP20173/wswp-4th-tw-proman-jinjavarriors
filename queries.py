@@ -115,3 +115,12 @@ def edit_card(card_id, status_id):
                                                   'card_id': card_id,
                                                   'status_id': status_id
                                               })
+
+
+def get_card_by_id(card_id):
+    return data_manager.execute_select("""
+                                        SELECT * FROM cards
+                                        WHERE id = %(card_id)s
+                                        RETURNING id;
+                                        """,
+                                       {'card_id': card_id})
