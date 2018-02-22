@@ -98,8 +98,8 @@ dataHandler = {
                 cardTitle: cardTitle,
                 boardId: boardId,
             },
-            success: function () {
-                return callback(boardId);
+            success: function (returnData) {
+                return callback(boardId,returnData[0],returnData[1],cardTitle);
             }
         });
     },

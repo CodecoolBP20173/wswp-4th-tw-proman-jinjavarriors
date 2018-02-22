@@ -8,7 +8,6 @@ dom = {
             });
             dom.createNewBoard();
             dom.loadBoards();
-            dom.createNewCard();
             $.ajaxSetup({
                 async: true
             });
@@ -34,43 +33,12 @@ dom = {
         $.each(boards, function (i, board) {
             dataHandler.getCards(board['id'], board, dom.generateBoard);
         });
-
     },
     loadCards: function (boardId) {
         // retrieves cards and makes showCards called
         dataHandler.getCardsByBoardId(boardId, dom.showCards);
     },
     showCards: function (cards, boardId) {
-        // shows the cards of a board
-        // it adds necessary event listeners also
-
-
-        // let board = document.getElementById('board' + boardId);
-        // var statusColumns = board.getElementsByClassName('board-details-content');
-        // var newStatusArray = [];
-        // var inProgressStatusArray = [];
-        // var testingStatusArray = [];
-        // var doneStatusArray = [];
-        // var colors = ['#ff7eb9', '#7afcff', '#feff9c', '#cdf670'];
-        //
-        // cards.sort(compare);
-        //
-        // for (let i = 0; i < cards.length; i++) {
-        //     if (cards[i].status_id === 1) {
-        //         newStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-        //     } else if (cards[i].status_id === 2) {
-        //         inProgressStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-        //     } else if (cards[i].status_id === 3) {
-        //         testingStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-        //     } else if (cards[i].status_id === 4) {
-        //         doneStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-        //     }
-        // }
-        // statusColumns.statusId1.innerHTML = newStatusArray.join('');
-        // statusColumns.statusId2.innerHTML = inProgressStatusArray.join('');
-        // statusColumns.statusId3.innerHTML = testingStatusArray.join('');
-        // statusColumns.statusId4.innerHTML = doneStatusArray.join('');
-
         let cardsDom = document.getElementsByClassName('card');
 
         for (let i = 0; i < cardsDom.length; i++) {
@@ -87,25 +55,17 @@ dom = {
             dataHandler.createNewBoard(boardTitle, dom.loadBoards);
             inputElement.value = "";
         });
+        dom.createNewCard();
     },
     createNewCard: function () {
-        var addCardArray = document.getElementsByClassName("addCard");
-        var boardId;
-
-        for (let addCardBtn of addCardArray) {
-            addCardBtn.addEventListener("click", function () {
-                boardId = parseInt(addCardBtn.parentElement.parentElement.dataset.boardid);
-            });
-        }
         var saveButton = document.getElementById('newCardBtn');
         saveButton.addEventListener("click", function () {
             let inputElement = document.getElementById("cardInput");
+            let boardId = $(this).data('boardid');
             var cardTitle = inputElement.value;
             var statusId = 1;
             var orderId = 1;
-            dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, function () {
-                dom.loadCards(boardId)
-            });
+            dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, dom.appendNewCard);
             inputElement.value = "";
         });
         var cards = document.getElementsByClassName("card");
@@ -132,6 +92,11 @@ dom = {
                 }, 200);
             })
         }
+    },
+    appendNewCard: function (boardId, cardId, orderId, cardTitle) {
+        let cardContent = `<div class="card" data-id="${cardId}" data-order="${orderId}" data-boardId="${boardId}">${cardTitle}</div>`;
+        let cardContainer = $(`.card-container[data-newBoardId=${boardId}]`);
+        cardContainer.append(cardContent);
     },
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
@@ -184,7 +149,7 @@ dom = {
             statusesContent +=
                 `<div class="board-details-container col-md-3 col-sm-6 col-12" data-statusid="${i + 1}">
                     <div>${status}</div>
-                    <div class="card-container dragCont">
+                    <div class="card-container dragCont" data-${statusesKeys[i]}BoardId="${board['id']}"}>
                         ${cards[statusesKeys[i]]}
                     </div>
                  </div>`;
@@ -193,7 +158,7 @@ dom = {
             `<div class="board-container" data-boardId="${board['id']}">
                     <div class="board-header col-12">
                         ${board['title']}
-                        <button type="button" class="btn btn-success addCard" data-toggle="modal" data-target="#newcard">
+                        <button type="button" class="btn btn-success addCard" data-toggle="modal" data-target="#newcard" data-boardid="${board['id']}">
                             Add Card <i data-boardId="${board['id']}" class="far fa-plus-square"></i>
                         </button>
                         <button class="btn btn-info arrow" data-boardId="${board['id']}">
@@ -207,6 +172,10 @@ dom = {
                 `;
         table.append(tableContent);
         dom.toggleEvent();
+        let addCardBtn = $(`.addCard[data-boardid=${board['id']}]`);
+        addCardBtn.on("click", function () {
+            $("#newCardBtn").data("boardid", board['id']);
+        })
     },
     toggleEvent: function () {
         let toggleBtns = $(".arrow");
@@ -214,7 +183,7 @@ dom = {
         for (let btn of toggleBtns) {
             $(btn).off("click");
             $(btn).on("click", function () {
-                let btnBoardId = this.dataset.boardid;
+                let btnBoardId = $(this).data('boardid');
                 let boards = $(".row");
 
                 for (let board of boards) {
