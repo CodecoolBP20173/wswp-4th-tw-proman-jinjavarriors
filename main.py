@@ -101,6 +101,7 @@ def save_boardStatus():
     board_id = request.form['boardId']
     is_active = request.form['is_active']
     queries.save_board_status(board_id, is_active)
+    return "Okay"
 
 
 def main():
