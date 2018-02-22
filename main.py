@@ -92,8 +92,8 @@ def create_new_card():
     user_id = queries.get_userid_by_name(session['user_name'])
     card_title = request.form['cardTitle']
     board_id = request.form['boardId']
-    queries.create_new_card(card_title, board_id, user_id)
-    return 'Success'
+    returnData = queries.create_new_card(card_title, board_id, user_id)
+    return jsonify(returnData)
 
 
 @app.route('/save-boardStatus', methods=['POST'])
@@ -101,6 +101,7 @@ def save_boardStatus():
     board_id = request.form['boardId']
     is_active = request.form['is_active']
     queries.save_board_status(board_id, is_active)
+    return "Okay"
 
 
 def main():
