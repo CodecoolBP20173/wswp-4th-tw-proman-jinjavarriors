@@ -18,9 +18,16 @@ def login():
     if request.method == 'POST':
         user_name = request.form['logUserName']
         user_password = request.form['logPass']
+
+        # checking username in database
+        isUserName = queries.check_username(user_name)
+        if isUserName == []:
+            return render_template('login.html', wrongpass=False)
+
+        # checking password
         hashed_pass = queries.get_hashed_pass(user_name)
-        check_login = password.verify_password(user_password, hashed_pass[0]['password'])
-        if check_login:
+        check_password = password.verify_password(user_password, hashed_pass[0]['password'])
+        if check_password:
             user_id = queries.get_userid_by_name(user_name)
             session['user_name'] = user_name
             session['userId'] = user_id
