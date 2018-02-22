@@ -20,7 +20,6 @@ dom = {
     },
     isFirstLoad: true,
     loadBoards: function (isFirstLoad = true, boardId) {
-        dataHandler.init();
         if (isFirstLoad) {
             dataHandler.getBoards(dom.showBoards);
         } else {
