@@ -106,14 +106,17 @@ def create_new_card(title, board_id, user_id):
                                               })
 
 
-def edit_card(card_id, status_id):
+def edit_card(card_id, status_id, order):
     return data_manager.execute_dml_statement("""
-                                        UPDATE cards SET status_id = %(status_id)s
+                                        UPDATE cards
+                                        SET status_id = %(status_id)s,
+                                            "order" = %(order)s
                                         WHERE id = %(card_id)s;
                                         """,
                                               {
                                                   'card_id': card_id,
-                                                  'status_id': status_id
+                                                  'status_id': status_id,
+                                                  'order': order
                                               })
 
 

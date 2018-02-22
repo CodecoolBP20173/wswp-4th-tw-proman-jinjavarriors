@@ -1,5 +1,6 @@
 // It uses data_handler.js to visualize elements
 dom = {
+    drake: null,
     init: function () {
         let container = $('.container');
         if (container.hasClass('main')) {
@@ -101,13 +102,32 @@ dom = {
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
         let containers = Array.prototype.slice.call(boardDetailsContainers);
-        let drake = dragula({containers: containers});
-        drake.on('drop', function (el) {
-            let cardId = parseInt(el.dataset.id);
-            let boardId = parseInt(el.parentNode.parentNode.parentNode.dataset.boardid);
-            let newStatus = parseInt(el.parentNode.parentNode.dataset.statusid);
-            dataHandler.editCard(boardId, cardId, newStatus);
-        })
+        if (dom.drake !== null){
+            dom.drake.destroy()
+        }
+        dom.drake = dragula({containers: containers});
+        dom.drake.on('drop', function (el, target, source) {
+            let sourceCounter = 1;
+            for (let child of source.children) {
+                child.dataset.order = sourceCounter;
+                sourceCounter += 1;
+                let boardId = child.parentElement.parentElement.parentElement.dataset.boardid;
+                let cardId = child.dataset.id;
+                let statusId = child.parentElement.parentElement.dataset.statusid;
+                let order = child.dataset.order;
+                dataHandler.editCard(boardId, cardId, statusId, order)
+            }
+            let targetCounter = 1;
+            for (let child of target.children) {
+                child.dataset.order = targetCounter;
+                targetCounter += 1;
+                let boardId = child.parentElement.parentElement.parentElement.dataset.boardid;
+                let cardId = child.dataset.id;
+                let statusId = child.parentElement.parentElement.dataset.statusid;
+                let order = child.dataset.order;
+                dataHandler.editCard(boardId, cardId, statusId, order)
+            }
+        });
     },
     generateBoard: function (cards, board) {
         var statusContents = {
@@ -133,7 +153,8 @@ dom = {
             }
         });
         dom.appendTableContent(statusContents, board);
-    },
+    }
+    ,
     appendTableContent: function (cards, board) {
         let table = $("#mainBoard");
         let statuses = ["New", "In progress", "Testing", "Done"];
@@ -172,11 +193,13 @@ dom = {
                 `;
         table.append(tableContent);
         dom.toggleEvent();
+        dom.dragAndDrop();
         let addCardBtn = $(`.addCard[data-boardid=${board['id']}]`);
         addCardBtn.on("click", function () {
             $("#newCardBtn").data("boardid", board['id']);
         })
-    },
+    }
+    ,
     toggleEvent: function () {
         let toggleBtns = $(".arrow");
 
@@ -215,7 +238,8 @@ dom = {
                 }
             })
         }
-    },
+    }
+    ,
     toggleEventNewBoard: function () {
         let newBtn = document.querySelectorAll(".arrow")[-1];
         $(newBtn).on("click", function () {
@@ -251,7 +275,8 @@ dom = {
             }
         })
     }
-};
+}
+;
 
 function appendToElement(elementToExtend, textToAppend) {
     let fakeDiv = document.createElement('div');
