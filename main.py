@@ -111,6 +111,21 @@ def save_boardStatus():
     return "Okay"
 
 
+@app.route('/edit-card', methods=['POST'])
+def edit_card():
+    status_id = request.form['status_id']
+    card_id = request.form['card_id']
+    queries.edit_card(card_id, status_id)
+    return 'Success'
+
+
+@app.route('/get-card', methods=['POST'])
+def get_card():
+    card_id = request.form['card_id']
+    card = queries.get_card_by_id(card_id)
+    return jsonify(card)
+
+
 def main():
     app.run(debug=True)
 
