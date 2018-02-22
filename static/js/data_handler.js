@@ -73,9 +73,38 @@ dataHandler = {
             }
         })
     },
-    editTitle: function (cardId, newTitle) {
-        card = dataHandler.getCard(cardId);
-        card.title = newTitle;
-        this._saveData();
+    loadCard: function (card) {
+
+    },
+    returnOnBoardCards: function (boardId) {
+        let all_cards = document.getElementsByClassName("card");
+        let cards = [];
+        for (let i = 0; i < all_cards.length; i++) {
+            let card = all_cards[i];
+            if (card.dataset.boardid == boardId) {
+                cards.push(card.dataset.id);
+            }
+        }
+
+        let cardsLength = dataHandler._data.cards.length;
+
+        var cardsAndDetails = [];
+        for (var i = 0; i < cards.length; i++) {
+            for (var j = 0; j < cardsLength; j++) {
+                if (cards[i] == dataHandler._data.cards[j].id) {
+                    cardsAndDetails.push(dataHandler._data.cards[j]);
+                }
+            }
+        }
+        return cardsAndDetails;
+    },
+    saveCardTitle: function (cardId, newTitle) {
+        $.ajax("save-card-title", {
+            method: 'POST',
+            data: {
+                cardTitle: newTitle,
+                cardId: cardId,
+            },
+        });
     },
 };
