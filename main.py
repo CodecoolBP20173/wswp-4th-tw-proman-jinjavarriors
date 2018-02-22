@@ -9,7 +9,15 @@ app.secret_key = 'secret'
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if 'user_name' in session:
-        return render_template('boards.html')
+        username = session['user_name']
+        greets = [
+            'What’s up ' + username + '?',
+            'Welcome back ' + username + '!',
+            'Have a nice day ' + username + '!',
+            'Ahoyy ' + username + '!',
+            'Hola ' + username + '!',
+            'Here we go again! Smash the house ' + username + '!']
+        return render_template('boards.html', greets=greets)
     return redirect(url_for('login'))
 
 

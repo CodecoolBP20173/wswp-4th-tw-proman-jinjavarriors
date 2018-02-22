@@ -136,3 +136,8 @@ div[data-statusid$='3'] .card {
 div[data-statusid$='4'] .card {
     background: rgb(205, 246, 112);
 }
+
+#usernameNav {
+    color: white;
+    font-family: 'Questrial', sans-serif !important;
+}
