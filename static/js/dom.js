@@ -192,8 +192,8 @@ dom = {
                     if (board.dataset.boardid == btnBoardId) {
                         if (board.classList.contains("hidden")) {
                             $(board).removeClass("hidden");
-                            $(this).find("i").removeClass("fa fa-angle-up");
-                            $(this).find("i").addClass("fa fa-angle-down");
+                            $(this).find("i").removeClass("fa fa-angle-down");
+                            $(this).find("i").addClass("fa fa-angle-up");
                             $.ajax("/save-boardStatus", {
                                 method: 'POST',
                                 data: {
@@ -203,8 +203,8 @@ dom = {
                             })
                         } else {
                             $(board).addClass("hidden");
-                            $(this).find("i").removeClass("fa fa-angle-down");
-                            $(this).find("i").addClass("fa fa-angle-up");
+                            $(this).find("i").removeClass("fa fa-angle-up");
+                            $(this).find("i").addClass("fa fa-angle-down");
                             $.ajax("/save-boardStatus", {
                                 method: 'POST',
                                 data: {
