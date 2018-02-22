@@ -1,4 +1,3 @@
-// It uses data_handler.js to visualize elements
 dom = {
     drake: null,
     init: function () {
@@ -21,33 +20,17 @@ dom = {
     },
     isFirstLoad: true,
     loadBoards: function (isFirstLoad = true, boardId) {
-        dataHandler.init();
         if (isFirstLoad) {
             dataHandler.getBoards(dom.showBoards);
         } else {
             dataHandler.getBoard(boardId, dom.showBoards);
         }
-        // retrieves boards and makes showBoards called
     },
     showBoards: function (boards) {
-        let table = $(".board-main");
         $.each(boards, function (i, board) {
             dataHandler.getCards(board['id'], board, dom.generateBoard);
         });
     },
-    loadCards: function (boardId) {
-        // retrieves cards and makes showCards called
-        dataHandler.getCardsByBoardId(boardId, dom.showCards);
-    },
-    showCards: function (cards, boardId) {
-        let cardsDom = document.getElementsByClassName('card');
-
-        for (let i = 0; i < cardsDom.length; i++) {
-            var random_color = colors[Math.floor(Math.random() * colors.length)];
-            cardsDom[i].style.backgroundColor = random_color;
-        }
-    },
-    // here comes more features
     createNewBoard: function () {
         var saveButton = document.getElementById('saveBtn');
         saveButton.addEventListener('click', function () {
@@ -84,7 +67,6 @@ dom = {
                     if (card.dataset.id === _this.dataset.id) {
                         currentCard = card;
                     }
-                    let statusId = currentCard.parentNode.id;
                     let boardId = parseInt(currentCard.parentNode.parentNode.parentNode.previousSibling.id);
 
                     for (let i = 1; i < 5; i++) {
@@ -102,7 +84,7 @@ dom = {
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
         let containers = Array.prototype.slice.call(boardDetailsContainers);
-        if (dom.drake !== null){
+        if (dom.drake !== null) {
             dom.drake.destroy()
         }
         dom.drake = dragula({containers: containers});
@@ -153,8 +135,7 @@ dom = {
             }
         });
         dom.appendTableContent(statusContents, board);
-    }
-    ,
+    },
     appendTableContent: function (cards, board) {
         let table = $("#mainBoard");
         let statuses = ["New", "In progress", "Testing", "Done"];
@@ -168,7 +149,7 @@ dom = {
         }
         $.each(statuses, function (i, status) {
             statusesContent +=
-                `<div class="board-details-container col-md-3 col-sm-6 col-12" data-statusid="${i + 1}">
+                `<div class="board-details-container col-lg-3 col-md-6 col-12" data-statusid="${i + 1}">
                     <div>${status}</div>
                     <div class="card-container dragCont" data-${statusesKeys[i]}BoardId="${board['id']}"}>
                         ${cards[statusesKeys[i]]}
@@ -198,8 +179,7 @@ dom = {
         addCardBtn.on("click", function () {
             $("#newCardBtn").data("boardid", board['id']);
         })
-    }
-    ,
+    },
     toggleEvent: function () {
         let toggleBtns = $(".arrow");
 
@@ -210,7 +190,7 @@ dom = {
                 let boards = $(".row");
 
                 for (let board of boards) {
-                    if (board.dataset.boardid == btnBoardId) {
+                    if (parseInt(board.dataset.boardid) === btnBoardId) {
                         if (board.classList.contains("hidden")) {
                             $(board).removeClass("hidden");
                             $(this).find("i").removeClass("fa fa-angle-down");
@@ -238,80 +218,8 @@ dom = {
                 }
             })
         }
-    }
-    ,
-    toggleEventNewBoard: function () {
-        let newBtn = document.querySelectorAll(".arrow")[-1];
-        $(newBtn).on("click", function () {
-            let btnBoardId = this.dataset.boardid;
-            let boards = $(".row");
-
-            for (let board of boards) {
-                if (board.dataset.boardid == btnBoardId) {
-                    if (board.classList.contains("hidden")) {
-                        $(board).removeClass("hidden");
-                        $(this).find("i").removeClass("fa fa-angle-up");
-                        $(this).find("i").addClass("fa fa-angle-down");
-                        $.ajax("/save-boardStatus", {
-                            method: 'POST',
-                            data: {
-                                boardId: btnBoardId,
-                                is_active: true
-                            }
-                        })
-                    } else {
-                        $(board).addClass("hidden");
-                        $(this).find("i").removeClass("fa fa-angle-down");
-                        $(this).find("i").addClass("fa fa-angle-up");
-                        $.ajax("/save-boardStatus", {
-                            method: 'POST',
-                            data: {
-                                boardId: btnBoardId,
-                                is_active: false
-                            }
-                        })
-                    }
-                }
-            }
-        })
-    }
-}
-;
-
-function appendToElement(elementToExtend, textToAppend) {
-    let fakeDiv = document.createElement('div');
-    fakeDiv.innerHTML = textToAppend;
-    elementToExtend.appendChild(fakeDiv.firstChild);
-    return elementToExtend.lastChild;
-}
-
-function setOrder(boardId, statusId) {
-    cards = dataHandler.returnOnBoardCards(boardId);
-    let newOrder = {};
-    var counter = 1;
-
-    for (let i = 0; i < cards.length; i++) {
-        if (cards[i].status_id === statusId) {
-            newOrder[cards[i].id] = counter;
-            counter++;
-        }
-    }
-    dataHandler.saveOrders(newOrder);
-}
-
-function compare(a, b) {
-    // Use toUpperCase() to ignore character casing
-    const genreA = a.order;
-    const genreB = b.order;
-
-    let comparison = 0;
-    if (genreA > genreB) {
-        comparison = 1;
-    } else if (genreA < genreB) {
-        comparison = -1;
-    }
-    return comparison;
-}
+    },
+};
 
 function checkRegistrationForm() {
     let usr = $('#regUserName');

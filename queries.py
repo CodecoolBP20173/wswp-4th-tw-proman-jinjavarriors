@@ -33,20 +33,21 @@ def get_hashed_pass(user_name):
 
 def create_user(username, password):
     return data_manager.execute_dml_statement("""
-    INSERT INTO users
-    (user_name,password)
-    VALUES(%(username)s,%(password)s)
-    RETURNING id;
-    """, {'username': username,
-          'password': password})
+                                                INSERT INTO users
+                                                (user_name,password)
+                                                VALUES(%(username)s,%(password)s)
+                                                RETURNING id;
+                                              """, {'username': username,
+                                                    'password': password})
 
 
 def check_username(username):
     return data_manager.execute_select("""
-    SELECT user_name
-    FROM users
-    WHERE user_name = %(username)s;
-    """, {'username': username})
+                                        SELECT user_name
+                                        FROM users
+                                        WHERE user_name = %(username)s;
+                                       """,
+                                       {'username': username})
 
 
 def get_userid_by_name(username):
@@ -59,10 +60,10 @@ def get_userid_by_name(username):
 
 def create_board(board_title, user_id):
     return data_manager.execute_dml_statement("""
-                                        INSERT INTO boards (title, is_active, user_id, creation_time, modified_time)
-                                        VALUES (%(board_title)s, false, %(user_id)s, now(), now())
-                                        RETURNING id
-                                        """,
+                                                INSERT INTO boards (title, is_active, user_id, creation_time, modified_time)
+                                                VALUES (%(board_title)s, FALSE, %(user_id)s, now(), now())
+                                                RETURNING id
+                                              """,
                                               {
                                                   'board_title': board_title,
                                                   'user_id': user_id
@@ -71,19 +72,21 @@ def create_board(board_title, user_id):
 
 def save_board_status(boardId, is_active):
     return data_manager.execute_dml_statement("""
-    UPDATE boards
-    SET is_active = %(is_active)s
-    WHERE boards.id = %(boardId)s
-    RETURNING id;
-    """, {'is_active': is_active,
-          'boardId': boardId})
+                                                UPDATE boards
+                                                SET is_active = %(is_active)s
+                                                WHERE boards.id = %(boardId)s
+                                                RETURNING id;
+                                              """, {
+        'is_active': is_active,
+        'boardId': boardId
+    })
 
 
 def get_new_order(board_id):
     return data_manager.execute_dml_statement("""
-                                        SELECT MAX("order") FROM cards
-                                        WHERE board_id = %(board_id)s AND status_id = 1;
-                                        """,
+                                                SELECT MAX("order") FROM cards
+                                                WHERE board_id = %(board_id)s AND status_id = 1;
+                                              """,
                                               {'board_id': board_id})
 
 
@@ -94,10 +97,10 @@ def create_new_card(title, board_id, user_id):
     else:
         next_order += 1
     return data_manager.execute_dml_statement("""
-                                        INSERT INTO cards (title, board_id, status_id, "order", user_id)
-                                        VALUES (%(title)s, %(board_id)s, 1, %(next_order)s, %(user_id)s)
-                                        RETURNING id,"order"
-                                        """,
+                                                INSERT INTO cards (title, board_id, status_id, "order", user_id)
+                                                VALUES (%(title)s, %(board_id)s, 1, %(next_order)s, %(user_id)s)
+                                                RETURNING id,"order"
+                                              """,
                                               {
                                                   'title': title,
                                                   'board_id': board_id,
@@ -108,11 +111,11 @@ def create_new_card(title, board_id, user_id):
 
 def edit_card(card_id, status_id, order):
     return data_manager.execute_dml_statement("""
-                                        UPDATE cards
-                                        SET status_id = %(status_id)s,
-                                            "order" = %(order)s
-                                        WHERE id = %(card_id)s;
-                                        """,
+                                                UPDATE cards
+                                                SET status_id = %(status_id)s,
+                                                    "order" = %(order)s
+                                                WHERE id = %(card_id)s;
+                                              """,
                                               {
                                                   'card_id': card_id,
                                                   'status_id': status_id,
@@ -124,5 +127,5 @@ def get_card_by_id(card_id):
     return data_manager.execute_select("""
                                         SELECT * FROM cards
                                         WHERE id = %(card_id)s
-                                        """,
+                                       """,
                                        {'card_id': card_id})
