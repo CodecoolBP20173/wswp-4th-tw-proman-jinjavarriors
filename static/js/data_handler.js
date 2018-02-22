@@ -141,21 +141,22 @@ dataHandler = {
         board.is_active = !board.is_active;
         dataHandler._saveData();
     },
-    editCard: function (boardId, cardId, statusId) {
+    editCard: function (boardId, cardId, statusId, order) {
         $.ajax('/get-card', {
             method: 'POST',
             data: {
                 card_id: cardId
             },
             success: function (card) {
-                if (card[0]["board_id"] !== boardId) {
+                if (card[0]["board_id"] !== parseInt(boardId)) {
                     throw "You cannot move card to another board!";
                 }
                 $.ajax("edit-card", {
                     method: 'POST',
                     data: {
                         status_id: statusId,
-                        card_id: cardId
+                        card_id: cardId,
+                        order: order
                     }
                 });
             }
