@@ -94,7 +94,11 @@ dom = {
         }
     },
     appendNewCard: function (boardId, cardId, orderId, cardTitle) {
-        let cardContent = `<div class="card" data-id="${cardId}" data-order="${orderId}" data-boardId="${boardId}">${cardTitle}</div>`;
+        let cardContent = `
+                            <div class="card container" data-id="${cardId}" data-order="${orderId}" data-boardId="${boardId}">
+                                <div class="editBtn"><a class="far fa-edit"></a></div>
+                                <div>${cardTitle}</div>
+                            </div>`;
         let cardContainer = $(`.card-container[data-newBoardId=${boardId}]`);
         cardContainer.append(cardContent);
     },
@@ -117,8 +121,11 @@ dom = {
             done: ""
         };
         $.each(cards, function (i, card) {
-            let cardContent = `<div class="card" data-id="${card['id']}" data-order="${card['order']}" 
-                          data-boardId="${card['board-id']}">${card['title']}</div>`;
+            let cardContent = `
+                        <div class="card" data-id="${card['id']}" data-order="${card['order']}" data-boardId="${card['board-id']}">
+                            <div class="editBtn"><a class="far fa-edit"></a></div>
+                            ${card['title']}
+                        </div>`;
             if (card['status_id'] == 1) {
                 statusContents.new += cardContent;
             }

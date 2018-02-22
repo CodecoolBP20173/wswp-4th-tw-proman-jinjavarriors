@@ -110,3 +110,13 @@ form {
 .card-container {
     min-height: 100%;
 }
+
+.editBtn {
+    padding-left: 90%;
+    font-size: 50%;
+}
+
+.fa-edit:before {
+    align-items: right;
+    cursor: pointer;
+}
