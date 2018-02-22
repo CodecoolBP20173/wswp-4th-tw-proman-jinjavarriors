@@ -62,11 +62,10 @@ def create_board(board_title, user_id):
                                         VALUES (%(board_title)s, 'false', %(user_id)s, now(), now())
                                         RETURNING id
                                         """,
-                                       {
-                                           'board_title': board_title,
-                                           'user_id': user_id
-                                       })
-
+                                              {
+                                                  'board_title': board_title,
+                                                  'user_id': user_id
+                                              })
 
 
 def save_board_status(boardId, is_active):
@@ -76,8 +75,8 @@ def save_board_status(boardId, is_active):
     WHERE boards.id = %(boardId)s
     """, {'is_active': is_active,
           'boardId': boardId})
-  
-  
+
+
 def get_new_order(board_id):
     return data_manager.execute_dml_statement("""
                                         SELECT MAX("order") FROM cards
@@ -103,4 +102,3 @@ def create_new_card(title, board_id, user_id):
                                            'next_order': next_order,
                                            'user_id': user_id
                                        })
-
