@@ -110,3 +110,19 @@ form {
 .card-container {
     min-height: 100%;
 }
+
+div[data-statusid$='1'] .card {
+    background: rgb(112, 252, 255);
+}
+
+div[data-statusid$='2'] .card {
+    background: rgb(254, 255, 156);
+}
+
+div[data-statusid$='3'] .card {
+    background: rgb(255, 126, 185);
+}
+
+div[data-statusid$='4'] .card {
+    background: rgb(205, 246, 112);
+}
