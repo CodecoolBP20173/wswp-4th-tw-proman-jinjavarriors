@@ -19,7 +19,8 @@ def get_board(user_id, board_id):
 
 def get_cards(board_id):
     return data_manager.execute_select('''SELECT * FROM cards
-                                        WHERE board_id = %(board_id)s;
+                                        WHERE board_id = %(board_id)s
+                                        ORDER BY "order";
                                        ''',
                                        {'board_id': board_id})
 
