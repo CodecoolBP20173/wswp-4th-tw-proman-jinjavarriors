@@ -119,6 +119,7 @@ form {
 .fa-edit:before {
     align-items: right;
     cursor: pointer;
+}
 
 div[data-statusid$='1'] .card {
     background: rgb(112, 252, 255);
