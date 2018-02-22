@@ -8,10 +8,10 @@ dom = {
             });
             dom.createNewBoard();
             dom.loadBoards();
+            dom.createNewCard();
             $.ajaxSetup({
                 async: true
             });
-            dom.createNewCard();
             dom.dragAndDrop();
         }
         if (container.hasClass('registration-container')) {
@@ -170,7 +170,6 @@ dom = {
             }
         });
         dom.appendTableContent(statusContents, board);
-        dom.createNewCard();
     },
     appendTableContent: function (cards, board) {
         let table = $("#mainBoard");
