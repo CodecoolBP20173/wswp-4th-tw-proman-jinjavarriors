@@ -115,7 +115,8 @@ def save_boardStatus():
 def edit_card():
     status_id = request.form['status_id']
     card_id = request.form['card_id']
-    queries.edit_card(card_id, status_id)
+    order = request.form['order']
+    queries.edit_card(card_id, status_id, order)
     return 'Success'
 
 

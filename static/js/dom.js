@@ -1,5 +1,5 @@
-// It uses data_handler.js to visualize elements
 dom = {
+    drake: null,
     init: function () {
         let container = $('.container');
         if (container.hasClass('main')) {
@@ -21,33 +21,17 @@ dom = {
     },
     isFirstLoad: true,
     loadBoards: function (isFirstLoad = true, boardId) {
-        dataHandler.init();
         if (isFirstLoad) {
             dataHandler.getBoards(dom.showBoards);
         } else {
             dataHandler.getBoard(boardId, dom.showBoards);
         }
-        // retrieves boards and makes showBoards called
     },
     showBoards: function (boards) {
-        let table = $(".board-main");
         $.each(boards, function (i, board) {
             dataHandler.getCards(board['id'], board, dom.generateBoard);
         });
     },
-    loadCards: function (boardId) {
-        // retrieves cards and makes showCards called
-        dataHandler.getCardsByBoardId(boardId, dom.showCards);
-    },
-    showCards: function (cards, boardId) {
-        let cardsDom = document.getElementsByClassName('card');
-
-        for (let i = 0; i < cardsDom.length; i++) {
-            var random_color = colors[Math.floor(Math.random() * colors.length)];
-            cardsDom[i].style.backgroundColor = random_color;
-        }
-    },
-    // here comes more features
     createNewBoard: function () {
         var saveButton = document.getElementById('saveBtn');
         saveButton.addEventListener('click', function () {
@@ -84,7 +68,6 @@ dom = {
                     if (card.dataset.id === _this.dataset.id) {
                         currentCard = card;
                     }
-                    let statusId = currentCard.parentNode.id;
                     let boardId = parseInt(currentCard.parentNode.parentNode.parentNode.previousSibling.id);
 
                     for (let i = 1; i < 5; i++) {
@@ -127,13 +110,32 @@ dom = {
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
         let containers = Array.prototype.slice.call(boardDetailsContainers);
-        let drake = dragula({containers: containers});
-        drake.on('drop', function (el) {
-            let cardId = parseInt(el.dataset.id);
-            let boardId = parseInt(el.parentNode.parentNode.parentNode.dataset.boardid);
-            let newStatus = parseInt(el.parentNode.parentNode.dataset.statusid);
-            dataHandler.editCard(boardId, cardId, newStatus);
-        })
+        if (dom.drake !== null) {
+            dom.drake.destroy()
+        }
+        dom.drake = dragula({containers: containers});
+        dom.drake.on('drop', function (el, target, source) {
+            let sourceCounter = 1;
+            for (let child of source.children) {
+                child.dataset.order = sourceCounter;
+                sourceCounter += 1;
+                let boardId = child.parentElement.parentElement.parentElement.dataset.boardid;
+                let cardId = child.dataset.id;
+                let statusId = child.parentElement.parentElement.dataset.statusid;
+                let order = child.dataset.order;
+                dataHandler.editCard(boardId, cardId, statusId, order)
+            }
+            let targetCounter = 1;
+            for (let child of target.children) {
+                child.dataset.order = targetCounter;
+                targetCounter += 1;
+                let boardId = child.parentElement.parentElement.parentElement.dataset.boardid;
+                let cardId = child.dataset.id;
+                let statusId = child.parentElement.parentElement.dataset.statusid;
+                let order = child.dataset.order;
+                dataHandler.editCard(boardId, cardId, statusId, order)
+            }
+        });
     },
     generateBoard: function (cards, board) {
         var statusContents = {
@@ -176,7 +178,7 @@ dom = {
         }
         $.each(statuses, function (i, status) {
             statusesContent +=
-                `<div class="board-details-container col-md-3 col-sm-6 col-12" data-statusid="${i + 1}">
+                `<div class="board-details-container col-lg-3 col-md-6 col-12" data-statusid="${i + 1}">
                     <div>${status}</div>
                     <div class="card-container dragCont" data-${statusesKeys[i]}BoardId="${board['id']}"}>
                         ${cards[statusesKeys[i]]}
@@ -201,6 +203,7 @@ dom = {
                 `;
         table.append(tableContent);
         dom.toggleEvent();
+        dom.dragAndDrop();
         let addCardBtn = $(`.addCard[data-boardid=${board['id']}]`);
         addCardBtn.on("click", function () {
             $("#newCardBtn").data("boardid", board['id']);
@@ -216,7 +219,7 @@ dom = {
                 let boards = $(".row");
 
                 for (let board of boards) {
-                    if (board.dataset.boardid == btnBoardId) {
+                    if (parseInt(board.dataset.boardid) === btnBoardId) {
                         if (board.classList.contains("hidden")) {
                             $(board).removeClass("hidden");
                             $(this).find("i").removeClass("fa fa-angle-down");
@@ -246,41 +249,6 @@ dom = {
         }
     }
 };
-
-function appendToElement(elementToExtend, textToAppend) {
-    let fakeDiv = document.createElement('div');
-    fakeDiv.innerHTML = textToAppend;
-    elementToExtend.appendChild(fakeDiv.firstChild);
-    return elementToExtend.lastChild;
-}
-
-function setOrder(boardId, statusId) {
-    cards = dataHandler.returnOnBoardCards(boardId);
-    let newOrder = {};
-    var counter = 1;
-
-    for (let i = 0; i < cards.length; i++) {
-        if (cards[i].status_id === statusId) {
-            newOrder[cards[i].id] = counter;
-            counter++;
-        }
-    }
-    dataHandler.saveOrders(newOrder);
-}
-
-function compare(a, b) {
-    // Use toUpperCase() to ignore character casing
-    const genreA = a.order;
-    const genreB = b.order;
-
-    let comparison = 0;
-    if (genreA > genreB) {
-        comparison = 1;
-    } else if (genreA < genreB) {
-        comparison = -1;
-    }
-    return comparison;
-}
 
 function checkRegistrationForm() {
     let usr = $('#regUserName');
