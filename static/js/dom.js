@@ -1,202 +1,60 @@
-// It uses data_handler.js to visualize elements
 dom = {
+    drake: null,
     init: function () {
-        dom.createNewBoard();
-        dom.loadBoards();
-        dom.createNewCard();
-        dom.dragAndDrop();
+        let container = $('.container');
+        if (container.hasClass('main')) {
+            $.ajaxSetup({
+                async: false
+            });
+            dom.createNewBoard();
+            dom.loadBoards();
+            dom.editCardTitle();
+            $.ajaxSetup({
+                async: true
+            });
+            dom.dragAndDrop();
+        }
+        if (container.hasClass('registration-container')) {
+            showRegistrationMessage();
+            checkRegistrationForm();
+        }
     },
     isFirstLoad: true,
-
-    loadBoards: function () {
-        dataHandler.init();
-        dataHandler.getBoards(dom.showBoards);
-        // retrieves boards and makes showBoards called
+    loadBoards: function (isFirstLoad = true, boardId) {
+        if (isFirstLoad) {
+            dataHandler.getBoards(dom.showBoards);
+        } else {
+            dataHandler.getBoard(boardId, dom.showBoards);
+        }
     },
     showBoards: function (boards) {
-        // shows boards appending them to #boards div
-        // it adds necessary event listeners also
-        var titles = [];
-        var ids = [];
-        for (let i = 0; i < boards.length; i++) {
-            let board = boards[i];
-            titles.push(board.title);
-            ids.push(board.id);
-        }
-
-
-        if (!dom.isFirstLoad) {
-            titles.splice(0, titles.length - 1);
-            ids.splice(0, ids.length - 1);
-
-        }
-
-        //Generate board container
-        dataHandler.getStatuses(function (statuses) {
-            var element = document.getElementsByClassName("board-main")[0];
-            for (let i = 0; i < titles.length; i++) {
-                let id = ids[i];
-                let title = titles[i];
-
-                var boardContainer = `<div class="board-container" id="${id}">
-                                            <div class="board-header font-weight-bold col-12">${title}
-                                                <button type="button" class="btn btn-success addCard" data-toggle="modal" data-target="#newcard">
-                                                    Add card <i id="addCard${id}" class="far fa-plus-square"></i>
-                                                </button>
-                                                <button class="btn btn-info arrow" id="btn-${id}">
-                                                    <i id="openArrow${id}" class="fas"></i>
-                                                </button>
-                                            </div>
-                                        </div>`;
-                var boardContentActive = `<div id="board${id}" class="board-content row">
-                                            <div class="board-details-container col-md-3 col-sm-6 col-12">
-                                                <div class="board-details-header font-weight-bold">${statuses[0].name}</div>
-                                                <div id="statusId${statuses[0].id}" class="board-details-content dragCont h-100"></div>
-                                            </div>
-                                            <div class="board-details-container col-md-3 col-sm-6 col-12">
-                                                <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
-                                                <div id="statusId${statuses[1].id}" class="board-details-content dragCont h-100"></div>
-                                            </div>
-                                            <div class="board-details-container col-md-3 col-sm-6 col-12">
-                                                <div class="board-details-header font-weight-bold">${statuses[2].name}</div>
-                                                <div id="statusId${statuses[2].id}" class="board-details-content dragCont h-100"></div>
-                                            </div>
-                                            <div class="board-details-container col-md-3 col-sm-6 col-12">
-                                                <div class="board-details-header font-weight-bold">${statuses[3].name}</div>
-                                                <div id="statusId${statuses[3].id}" class="board-details-content dragCont h-100"></div>
-                                            </div>
-                                        </div>`;
-                var boardContentInactive = `<div id="board${id}" class="board-content row" hidden>
-                                                <div class="board-details-container col-md-3 col-sm-6 col-12">
-                                                    <div class="board-details-header font-weight-bold">${statuses[0].name}</div>
-                                                    <div id="statusId${statuses[0].id}" class="board-details-content dragCont h-100"></div>
-                                                </div>
-                                                <div class="board-details-container col-md-3 col-sm-6 col-12">
-                                                    <div class="board-details-header font-weight-bold">${statuses[1].name}</div>
-                                                    <div id="statusId${statuses[1].id}" class="board-details-content dragCont h-100"></div>
-                                                </div>
-                                                <div class="board-details-container col-md-3 col-sm-6 col-12">
-                                                    <div class="board-details-header font-weight-bold">${statuses[2].name}</div>
-                                                    <div id="statusId${statuses[2].id}" class="board-details-content dragCont h-100"></div>
-                                                </div>
-                                                <div class="board-details-container col-md-3 col-sm-6 col-12">
-                                                    <div class="board-details-header font-weight-bold">${statuses[3].name}</div>
-                                                    <div id="statusId${statuses[3].id}" class="board-details-content dragCont h-100"></div>
-                                                </div>
-                                            </div>`;
-
-                appendToElement(element, boardContainer);
-                if (boards[id - 1].is_active) {
-                    appendToElement(element, boardContentActive);
-                    let btn_icon = document.getElementById('openArrow' + id);
-                    btn_icon.classList.add('fa-arrow-circle-up');
-                } else if (!boards[id - 1].is_active) {
-                    appendToElement(element, boardContentInactive);
-                    let btn_icon = document.getElementById('openArrow' + id);
-                    btn_icon.classList.add('fa-arrow-circle-down');
-                }
-
-                let openButton = document.getElementById("btn-" + id.toString());
-                openButton.addEventListener("click", function () {
-                    dom.loadCards(id);
-                    let board = document.getElementById('board' + boards[id - 1].id);
-                    let btn_icon = document.getElementById('openArrow' + id);
-                    if (board.hasAttribute('hidden')) {
-                        board.removeAttribute('hidden');
-                        btn_icon.classList.remove('fa-arrow-circle-down');
-                        btn_icon.classList.add('fa-arrow-circle-up');
-                    } else {
-                        let att = document.createAttribute('hidden');
-                        board.setAttributeNode(att);
-                        btn_icon.classList.remove('fa-arrow-circle-up');
-                        btn_icon.classList.add('fa-arrow-circle-down');
-
-                    }
-                });
-                openButton.addEventListener('click', function () {
-                    dataHandler.getBoard(id, dataHandler.saveBoardStatus);
-                });
-                dom.loadCards(id);
-            }
+        $.each(boards, function (i, board) {
+            dataHandler.getCards(board['id'], board, dom.generateBoard);
         });
-
-
-        dom.isFirstLoad = false;
     },
-    loadCards: function (boardId) {
-        // retrieves cards and makes showCards called
-        dataHandler.getCardsByBoardId(boardId, dom.showCards);
-    },
-    showCards: function (cards, boardId) {
-        // shows the cards of a board
-        // it adds necessary event listeners also
-        let board = document.getElementById('board' + boardId);
-
-        var statusColumns = board.getElementsByClassName('board-details-content');
-        var newStatusArray = [];
-        var inProgressStatusArray = [];
-        var testingStatusArray = [];
-        var doneStatusArray = [];
-        var colors = ['#ff7eb9', '#7afcff', '#feff9c', '#cdf670'];
-
-
-        cards.sort(compare);
-
-        for (let i = 0; i < cards.length; i++) {
-            if (cards[i].status_id === 1) {
-                newStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-            } else if (cards[i].status_id === 2) {
-                inProgressStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-            } else if (cards[i].status_id === 3) {
-                testingStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-            } else if (cards[i].status_id === 4) {
-                doneStatusArray.push(`<div class="card" id="card${cards[i].id}" data-id="${cards[i].id}" data-order="${cards[i].order}" data-boardId="${cards[i].board_id}" contenteditable>` + cards[i].title + `</div>`);
-            }
-        }
-        statusColumns.statusId1.innerHTML = newStatusArray.join('');
-        statusColumns.statusId2.innerHTML = inProgressStatusArray.join('');
-        statusColumns.statusId3.innerHTML = testingStatusArray.join('');
-        statusColumns.statusId4.innerHTML = doneStatusArray.join('');
-
-        let cardsDom = document.getElementsByClassName('card');
-        for (let i = 0; i < cardsDom.length; i++) {
-            var random_color = colors[Math.floor(Math.random() * colors.length)];
-            cardsDom[i].style.backgroundColor = random_color;
-        }
-
-    },
-    // here comes more features
     createNewBoard: function () {
         var saveButton = document.getElementById('saveBtn');
         saveButton.addEventListener('click', function () {
             var inputElement = document.getElementById('newBoardName');
             var boardTitle = inputElement.value;
-            dataHandler.createNewBoard(boardTitle, dom.loadBoards)
+            dataHandler.createNewBoard(boardTitle, dom.loadBoards);
             inputElement.value = "";
         });
+        dom.createNewCard();
     },
     createNewCard: function () {
-        var addCardArray = document.getElementsByClassName("addCard");
-        var boardId;
-        for (let addCardBtn of addCardArray) {
-            addCardBtn.addEventListener("click", function () {
-                boardId = parseInt(addCardBtn.parentElement.parentElement.id);
-            });
-        }
-        ;
-
         var saveButton = document.getElementById('newCardBtn');
         saveButton.addEventListener("click", function () {
             let inputElement = document.getElementById("cardInput");
+            let boardId = $(this).data('boardid');
             var cardTitle = inputElement.value;
             var statusId = 1;
             var orderId = 1;
-            dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, function () {
-                dom.loadCards(boardId)
-            })
+            dataHandler.createNewCard(cardTitle, boardId, statusId, orderId, dom.appendNewCard);
             inputElement.value = "";
         });
         var cards = document.getElementsByClassName("card");
+
         for (let card of cards) {
             card.addEventListener("focusout", function () {
                 let cardId = parseInt(this.dataset.id);
@@ -207,71 +65,236 @@ dom = {
                 let _this = this;
                 setTimeout(function () {
                     let currentCard;
-                    if(card.dataset.id === _this.dataset.id){
+                    if (card.dataset.id === _this.dataset.id) {
                         currentCard = card;
                     }
-                    let statusId = currentCard.parentNode.id;
                     let boardId = parseInt(currentCard.parentNode.parentNode.parentNode.previousSibling.id);
-                    for(let i=1;i<5;i++){
+
+                    for (let i = 1; i < 5; i++) {
                         setOrder(boardId, i);
                     }
-                }, 1000);
-
+                }, 200);
             })
         }
+    },
+    editCardTitle: function () {
+        let penButtons = $('.fa-edit');
+        penButtons.on('click', {}, function (event) {
+            let cardId = $(this).closest($('.card')).data('id');
+            let currentCardTitle = $(this).closest('.editBtn').siblings('.cardTitle');
+            let currentCardTitleContent = currentCardTitle.text();
+            let inputField = `<input id="newCardTitle" type="text" name="newTitle" maxlength="44" value="${currentCardTitleContent}">`;
+            currentCardTitle.replaceWith(inputField);
 
+            let input = $('#newCardTitle');
+
+            input.on('focusout', function () {
+                let newTitle = $(input).val();
+                dataHandler.saveCardTitle(cardId, newTitle);
+                newTitleContent = `<div class="cardTitle">${newTitle}</div>`;
+                editedInputField = $('#newCardTitle');
+                editedInputField.replaceWith(newTitleContent);
+            })
+        })
+    },
+    appendNewCard: function (boardId, cardId, orderId, cardTitle) {
+        let cardContent = `
+                            <div class="card container" data-id="${cardId}" data-order="${orderId}" data-boardId="${boardId}">
+                                <div class="editBtn"><a class="far fa-edit"></a></div>
+                                <div class="cardTitle">${cardTitle}</div>
+                            </div>`;
+        let cardContainer = $(`.card-container[data-newBoardId=${boardId}]`);
+        cardContainer.append(cardContent);
+        dom.editCardTitle();
     },
     dragAndDrop: function () {
         var boardDetailsContainers = document.getElementsByClassName("dragCont");
         let containers = Array.prototype.slice.call(boardDetailsContainers);
-        let drake = dragula({containers: containers});
-        drake.on('drop', function (el) {
-            let cardId = parseInt(el.dataset.id);
-            let boardId = parseInt(el.parentNode.parentNode.parentNode.previousSibling.id);
-            let parent = el.parentNode;
-            let newStatus = parent.id;
-            newStatus = parseInt(newStatus.charAt(8));
-            dataHandler.editCard(boardId, cardId, newStatus);
-
-        })
-    }
-
-}
-
-function appendToElement(elementToExtend, textToAppend) {
-    let fakeDiv = document.createElement('div');
-    fakeDiv.innerHTML = textToAppend;
-    elementToExtend.appendChild(fakeDiv.firstChild);
-    return elementToExtend.lastChild;
-}
-
-function setOrder(boardId, statusId) {
-    cards = dataHandler.returnOnBoardCards(boardId);
-    let newOrder = {};
-    var counter = 1;
-    for (let i = 0; i < cards.length; i++) {
-        if (cards[i].status_id === statusId) {
-            newOrder[cards[i].id] = counter;
-            counter++;
+        if (dom.drake !== null) {
+            dom.drake.destroy()
         }
+        dom.drake = dragula({containers: containers});
+        dom.drake.on('drop', function (el, target, source) {
+            let sourceCounter = 1;
+            for (let child of source.children) {
+                child.dataset.order = sourceCounter;
+                sourceCounter += 1;
+                let boardId = child.parentElement.parentElement.parentElement.dataset.boardid;
+                let cardId = child.dataset.id;
+                let statusId = child.parentElement.parentElement.dataset.statusid;
+                let order = child.dataset.order;
+                dataHandler.editCard(boardId, cardId, statusId, order)
+            }
+            let targetCounter = 1;
+            for (let child of target.children) {
+                child.dataset.order = targetCounter;
+                targetCounter += 1;
+                let boardId = child.parentElement.parentElement.parentElement.dataset.boardid;
+                let cardId = child.dataset.id;
+                let statusId = child.parentElement.parentElement.dataset.statusid;
+                let order = child.dataset.order;
+                dataHandler.editCard(boardId, cardId, statusId, order)
+            }
+        });
+    },
+    generateBoard: function (cards, board) {
+        var statusContents = {
+            new: "",
+            in_progress: "",
+            testing: "",
+            done: ""
+        };
+        $.each(cards, function (i, card) {
+            let cardContent = `
+                        <div class="card" data-id="${card['id']}" data-order="${card['order']}" data-boardId="${card['board-id']}">
+                            <div class="editBtn"><a class="far fa-edit"></a></div>
+                            <div class="cardTitle">${card['title']}</div>
+                        </div>`;
+            if (card['status_id'] == 1) {
+                statusContents.new += cardContent;
+            }
+            else if (card['status_id'] == 2) {
+                statusContents.in_progress += cardContent;
+            }
+            else if (card['status_id'] == 3) {
+                statusContents.testing += cardContent;
+            }
+            else if (card['status_id'] == 4) {
+                statusContents.done += cardContent;
+            }
+        });
+        dom.appendTableContent(statusContents, board);
+    },
+    appendTableContent: function (cards, board) {
+        let table = $("#mainBoard");
+        let statuses = ["New", "In progress", "Testing", "Done"];
+        let statusesKeys = ["new", "in_progress", "testing", "done"];
+        let statusesContent = "";
+        let isHidden = "hidden";
+        let arrowIcon = "fa fa-angle-down";
+        if (board['is_active'] == true) {
+            isHidden = "";
+            arrowIcon = "fa fa-angle-up";
+        }
+        $.each(statuses, function (i, status) {
+            statusesContent +=
+                `<div class="board-details-container col-lg-3 col-md-6 col-12" data-statusid="${i + 1}">
+                    <div>${status}</div>
+                    <div class="card-container dragCont" data-${statusesKeys[i]}BoardId="${board['id']}"}>
+                        ${cards[statusesKeys[i]]}
+                    </div>
+                 </div>`;
+        });
+        let tableContent =
+            `<div class="board-container" data-boardId="${board['id']}">
+                    <div class="board-header col-12">
+                        ${board['title']}
+                        <button type="button" class="btn btn-success addCard" data-toggle="modal" data-target="#newcard" data-boardid="${board['id']}">
+                            Add Card <i data-boardId="${board['id']}" class="far fa-plus-square"></i>
+                        </button>
+                        <button class="btn btn-info arrow" data-boardId="${board['id']}">
+                            <i class="${arrowIcon}"></i>
+                        </button>
+                    </div>
+                    <div class="board-content row ${isHidden}" data-boardId="${board['id']}">
+                        ${statusesContent}
+                    </div>
+                 </div>
+                `;
+        table.append(tableContent);
+        dom.toggleEvent();
+        dom.dragAndDrop();
+        let addCardBtn = $(`.addCard[data-boardid=${board['id']}]`);
+        addCardBtn.on("click", function () {
+            $("#newCardBtn").data("boardid", board['id']);
+        })
+    },
+    toggleEvent: function () {
+        let toggleBtns = $(".arrow");
 
+        for (let btn of toggleBtns) {
+            $(btn).off("click");
+            $(btn).on("click", function () {
+                let btnBoardId = $(this).data('boardid');
+                let boards = $(".row");
+
+                for (let board of boards) {
+                    if (parseInt(board.dataset.boardid) === btnBoardId) {
+                        if (board.classList.contains("hidden")) {
+                            $(board).removeClass("hidden");
+                            $(this).find("i").removeClass("fa fa-angle-down");
+                            $(this).find("i").addClass("fa fa-angle-up");
+                            $.ajax("/save-boardStatus", {
+                                method: 'POST',
+                                data: {
+                                    boardId: btnBoardId,
+                                    is_active: true
+                                }
+                            })
+                        } else {
+                            $(board).addClass("hidden");
+                            $(this).find("i").removeClass("fa fa-angle-up");
+                            $(this).find("i").addClass("fa fa-angle-down");
+                            $.ajax("/save-boardStatus", {
+                                method: 'POST',
+                                data: {
+                                    boardId: btnBoardId,
+                                    is_active: false
+                                }
+                            })
+                        }
+                    }
+                }
+            })
+        }
     }
-    dataHandler.saveOrders(newOrder);
+};
 
+function checkRegistrationForm() {
+    let usr = $('#regUserName');
+    let pwd = $('#regPass');
+    let pwdCheck = $('#regPassRep');
+    let msg = $('#message');
+    let submitBtn = $('#submit');
 
+    pwd.attr('disabled', 'disabled');
+    pwdCheck.attr('disabled', 'disabled');
+    submitBtn.attr('disabled', 'disabled');
+
+    let checkUsername = function () {
+        if (usr.val().length < 6) {
+            msg.css('color', 'red');
+            msg.html('Username shorter than 6 characters.');
+            pwd.attr('disabled', 'disabled');
+            pwdCheck.attr('disabled', 'disabled');
+            submitBtn.attr('disabled', 'disabled');
+        } else {
+            pwd.removeAttr('disabled');
+            pwdCheck.removeAttr('disabled');
+            msg.html('');
+        }
+    };
+
+    let checkPassword = function () {
+        if (pwd.val() === pwdCheck.val() && pwd.val().length >= 6) {
+            msg.css('color', 'green');
+            msg.html('Passwords are matching.');
+            submitBtn.removeAttr('disabled');
+        } else {
+            msg.css('color', 'red');
+            msg.html('Passwords are either not matching or shorter than 8 characters.');
+            submitBtn.attr('disabled', 'disabled');
+        }
+    };
+
+    usr.keyup(checkUsername);
+    pwd.keyup(checkPassword);
+    pwdCheck.keyup(checkPassword);
 }
 
-function compare(a, b) {
-  // Use toUpperCase() to ignore character casing
-  const genreA = a.order;
-  const genreB = b.order;
-
-  let comparison = 0;
-  if (genreA > genreB) {
-    comparison = 1;
-  } else if (genreA < genreB) {
-    comparison = -1;
-  }
-  return comparison;
+function showRegistrationMessage() {
+    let msg = $('form').data('message');
+    if (msg !== '') {
+        alert(msg);
+    }
 }
-

@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <div class="login-container container">
+        <div class="login-content">
+            <form action="{{ url_for('login') }}" method="post">
+                <div class="form-group">
+                    <label for="logUserName">Username</label>
+                    <input type="text" class="form-control" id="logUserName" aria-describedby="emailHelp"
+                           placeholder="Enter username" name="logUserName" required>
+                </div>
+                <div class="form-group">
+                    <label for="logPass">Password</label>
+                    <input type="password" class="form-control" id="logPass" placeholder="Password" name="logPass" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {% if wrongpass is defined %}
+                    <br>
+                    <div class="alert alert-danger form-control">
+                        <strong>Hey!</strong> Your username or password is not correct!
+                    </div>
+                {% endif %}
+                <p>Don't have ProMan account? <a href="{{ url_for('registration') }}" class="signuphref">Sign up now!</a></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

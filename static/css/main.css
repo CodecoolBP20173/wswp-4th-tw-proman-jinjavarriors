@@ -11,7 +11,9 @@ body {
     position: absolute;
     right: 14px;
 }
-
+.hidden{
+    display: none !important;
+}
 .addCard {
     position: absolute;
     right: 56px;
@@ -43,7 +45,7 @@ body {
     font-size: 32pt;
 }
 
-.board-header, .board-details-header, .nav-link {
+.board-header, .board-details-header, .nav-link, .login-container, .signuphref, .registration-container {
     font-family: 'Questrial', sans-serif;
 }
 
@@ -80,5 +82,62 @@ span {
 }
 
 #addBoard {
+    font-family: 'Questrial', sans-serif !important;
+}
+
+.signuphref, .signuphref:hover, .signuphref:active, .signuphref:visited {
+    text-decoration: none !important;
+}
+
+.login-content {
+    float: none !important;
+    margin: 0 auto !important;
+}
+
+form {
+    width: 40%;
+    padding-top: 20%;
+    padding-bottom: auto;
+    margin: 0 auto;
+}
+
+#logoutBtn a {
+    color: white !important;
+    text-decoration: none !important;
+    font-family: 'Questrial', sans-serif !important;
+}
+
+.card-container {
+    min-height: 100%;
+}
+
+.editBtn {
+    padding-left: 90%;
+    font-size: 50%;
+}
+
+.fa-edit:before {
+    align-items: right;
+    cursor: pointer;
+}
+
+div[data-statusid$='1'] .card {
+    background: rgb(112, 252, 255);
+}
+
+div[data-statusid$='2'] .card {
+    background: rgb(254, 255, 156);
+}
+
+div[data-statusid$='3'] .card {
+    background: rgb(255, 126, 185);
+}
+
+div[data-statusid$='4'] .card {
+    background: rgb(205, 246, 112);
+}
+
+#usernameNav {
+    color: white;
     font-family: 'Questrial', sans-serif !important;
 }
